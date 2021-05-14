@@ -1,4 +1,20 @@
 import { createCipheriv } from 'crypto';
+
+enum ErrorCode {
+    success = 0, // "success"
+    appIDInvalid = 1, // "appID invalid"
+    roomIDInvalid = 2, // "roomID invalid"
+    userIDInvalid = 3, // "userID invalid"
+    privilegeInvalid = 4, // "privilege key must include 1 and 2; the value must be number"
+    secretInvalid = 5, // "secret must be a 32 byte string"
+    effectiveTimeInSecondsInvalid = 6, // "effectiveTimeInSeconds invalid"
+}
+
+interface ErrorInfo {
+    errorCode: ErrorCode; // 错误码来自 ErrorCode
+    errorMessage: string; // 对错误码的详细描述
+}
+
 function makeNonce(): number {
     return Date.now();
 }
@@ -39,7 +55,7 @@ function aesEncrypt(plainText: string, key: string, iv: string): ArrayBuffer {
     return Uint8Array.from(out).buffer;
 }
 
-export function getToken(
+export function generateToken(
     appId: number,
     roomId: string,
     userId: string,
@@ -47,44 +63,62 @@ export function getToken(
     secret: string,
     effectiveTimeInSeconds: number,
 ): string {
-    if (!appId) {
-        throw new Error('appId required');
-    } else if (typeof appId !== 'number') {
-        throw new Error('appId is not number');
+    if (!appId || typeof appId !== 'number') {
+        throw {
+            errorCode: ErrorCode.appIDInvalid,
+            errorMessage: 'appID invalid',
+        };
     }
 
-    if (!roomId) {
-        throw new Error('roomId required');
-    } else if (typeof roomId !== 'string') {
-        throw new Error('roomId is not string');
+    if (!roomId || typeof roomId !== 'string') {
+        throw {
+            errorCode: ErrorCode.roomIDInvalid,
+            errorMessage: 'roomID invalid',
+        };
     }
 
-    if (!userId) {
-        throw new Error('userId required');
-    } else if (typeof userId !== 'string') {
-        throw new Error('userId is not string');
+    if (!userId || typeof userId !== 'string') {
+        throw {
+            errorCode: ErrorCode.userIDInvalid,
+            errorMessage: 'userId invalid',
+        };
     }
 
-    if (!secret) {
-        throw new Error('secret required');
-    } else if (typeof secret !== 'string') {
-        throw new Error('secret is not string');
-    } else if (secret.length !== 32) {
-        throw new Error('secret must 32 byte length string');
+    if (!secret || typeof secret !== 'string' || secret.length !== 32) {
+        throw {
+            errorCode: ErrorCode.secretInvalid,
+            errorMessage: 'secret must be a 32 byte string',
+        };
     }
 
-    if (!privilege) {
-        throw new Error('privilege required');
-    } else if (typeof privilege !== 'object') {
-        throw new Error('privilege format error');
-    } else if (typeof privilege[1] !== 'number' || typeof privilege[2] !== 'number') {
-        throw new Error('privilege key must include 1 and 2; the value must be number');
+    if (
+        !privilege ||
+        typeof privilege !== 'object' ||
+        typeof privilege[1] !== 'number' ||
+        typeof privilege[2] !== 'number'
+    ) {
+        throw {
+            errorCode: ErrorCode.privilegeInvalid,
+            errorMessage: 'privilege key must include 1 and 2; the value must be number',
+        };
     }
 
-    if (!effectiveTimeInSeconds) {
-        throw new Error('effectiveTimeInSeconds required');
-    } else if (typeof secret !== 'string') {
-        throw new Error('effectiveTimeInSeconds is not number');
+    if (
+        !privilege ||
+        typeof privilege !== 'object' ||
+        typeof privilege[1] !== 'number' ||
+        typeof privilege[2] !== 'number'
+    ) {
+        throw {
+            errorCode: ErrorCode.privilegeInvalid,
+            errorMessage: 'privilege key must include 1 and 2; the value must be number',
+        };
+    }
+    if (!effectiveTimeInSeconds || typeof effectiveTimeInSeconds !== 'number') {
+        throw {
+            errorCode: ErrorCode.effectiveTimeInSecondsInvalid,
+            errorMessage: 'effectiveTimeInSeconds invalid',
+        };
     }
 
     const createTime = Math.floor(new Date().getTime() / 1000);

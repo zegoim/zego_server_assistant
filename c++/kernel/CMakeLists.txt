@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.6)
+set(CMAKE_CXX_FLAGS "-std=c++11 ${CMAKE_CXX_FLAGS}")
 
 # sources
 include (${CMAKE_HOME_DIRECTORY}/kernel/sources.cmake) # ALL_SOURCES_SERVER_ASSISTANT

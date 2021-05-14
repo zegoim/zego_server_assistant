@@ -1,17 +1,17 @@
 cmake_minimum_required(VERSION 3.6)
 
-macro(ZEGO_SOURCE_GROUP_BY_DIR source_files)       
-	set(sgbd_cur_dir ${CMAKE_CURRENT_SOURCE_DIR}/)	# where project define
-	foreach(sgbd_file ${${source_files}})
-		string(REGEX REPLACE ${sgbd_cur_dir} "" sgbd_fpath ${sgbd_file})
-		string(REGEX REPLACE "[^/\\\\]+$" "" sgbd_group_name ${sgbd_fpath})
-		if(sgbd_group_name)
-			string(REPLACE "/"   "\\\\"  sgbd_group_name_normal ${sgbd_group_name})
-			#message(STATUS ${sgbd_group_name_normal})
-			source_group(${sgbd_group_name_normal} FILES ${sgbd_file})
-		endif(sgbd_group_name)	
-	endforeach(sgbd_file)
-endmacro(ZEGO_SOURCE_GROUP_BY_DIR)
+# macro(ZEGO_SOURCE_GROUP_BY_DIR source_files)       
+# 	set(sgbd_cur_dir ${CMAKE_CURRENT_SOURCE_DIR}/)	# where project define
+# 	foreach(sgbd_file ${${source_files}})
+# 		string(REGEX REPLACE ${sgbd_cur_dir} "" sgbd_fpath ${sgbd_file})
+# 		string(REGEX REPLACE "[^/\\\\]+$" "" sgbd_group_name ${sgbd_fpath})
+# 		if(sgbd_group_name)
+# 			string(REPLACE "/"   "\\\\"  sgbd_group_name_normal ${sgbd_group_name})
+# 			#message(STATUS ${sgbd_group_name_normal})
+# 			source_group(${sgbd_group_name_normal} FILES ${sgbd_file})
+# 		endif(sgbd_group_name)	
+# 	endforeach(sgbd_file)
+# endmacro(ZEGO_SOURCE_GROUP_BY_DIR)
 
 
 macro (ZEGO_COLLECT_COMPLIE_SOURCE in_soruce_root_dir out_source_file_list)

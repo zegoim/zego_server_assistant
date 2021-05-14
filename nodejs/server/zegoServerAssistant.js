@@ -1,6 +1,16 @@
 "use strict";
 exports.__esModule = true;
 var crypto_1 = require("crypto");
+var ErrorCode;
+(function (ErrorCode) {
+    ErrorCode[ErrorCode["success"] = 0] = "success";
+    ErrorCode[ErrorCode["appIDInvalid"] = 1] = "appIDInvalid";
+    ErrorCode[ErrorCode["roomIDInvalid"] = 2] = "roomIDInvalid";
+    ErrorCode[ErrorCode["userIDInvalid"] = 3] = "userIDInvalid";
+    ErrorCode[ErrorCode["privilegeInvalid"] = 4] = "privilegeInvalid";
+    ErrorCode[ErrorCode["secretInvalid"] = 5] = "secretInvalid";
+    ErrorCode[ErrorCode["effectiveTimeInSecondsInvalid"] = 6] = "effectiveTimeInSecondsInvalid";
+})(ErrorCode || (ErrorCode = {}));
 function makeNonce() {
     return Date.now();
 }
@@ -35,48 +45,54 @@ function aesEncrypt(plainText, key, iv) {
     var out = Buffer.concat([encrypted, final]);
     return Uint8Array.from(out).buffer;
 }
-function getToken(appId, roomId, userId, privilege, secret, effectiveTimeInSeconds) {
-    if (!appId) {
-        throw new Error('appId required');
+function generateToken(appId, roomId, userId, privilege, secret, effectiveTimeInSeconds) {
+    if (!appId || typeof appId !== 'number') {
+        throw {
+            errorCode: ErrorCode.appIDInvalid,
+            errorMessage: 'appID invalid'
+        };
     }
-    else if (typeof appId !== 'number') {
-        throw new Error('appId is not number');
+    if (!roomId || typeof roomId !== 'string') {
+        throw {
+            errorCode: ErrorCode.roomIDInvalid,
+            errorMessage: 'roomID invalid'
+        };
     }
-    if (!roomId) {
-        throw new Error('roomId required');
+    if (!userId || typeof userId !== 'string') {
+        throw {
+            errorCode: ErrorCode.userIDInvalid,
+            errorMessage: 'userId invalid'
+        };
     }
-    else if (typeof roomId !== 'string') {
-        throw new Error('roomId is not string');
+    if (!secret || typeof secret !== 'string' || secret.length !== 32) {
+        throw {
+            errorCode: ErrorCode.secretInvalid,
+            errorMessage: 'secret must be a 32 byte string'
+        };
     }
-    if (!userId) {
-        throw new Error('userId required');
+    if (!privilege ||
+        typeof privilege !== 'object' ||
+        typeof privilege[1] !== 'number' ||
+        typeof privilege[2] !== 'number') {
+        throw {
+            errorCode: ErrorCode.privilegeInvalid,
+            errorMessage: 'privilege key must include 1 and 2; the value must be number'
+        };
     }
-    else if (typeof userId !== 'string') {
-        throw new Error('userId is not string');
+    if (!privilege ||
+        typeof privilege !== 'object' ||
+        typeof privilege[1] !== 'number' ||
+        typeof privilege[2] !== 'number') {
+        throw {
+            errorCode: ErrorCode.privilegeInvalid,
+            errorMessage: 'privilege key must include 1 and 2; the value must be number'
+        };
     }
-    if (!secret) {
-        throw new Error('secret required');
-    }
-    else if (typeof secret !== 'string') {
-        throw new Error('secret is not string');
-    }
-    else if (secret.length !== 32) {
-        throw new Error('secret must 32 byte length string');
-    }
-    if (!privilege) {
-        throw new Error('privilege required');
-    }
-    else if (typeof privilege !== 'object') {
-        throw new Error('privilege format error');
-    }
-    else if (typeof privilege[1] !== 'number' || typeof privilege[2] !== 'number') {
-        throw new Error('privilege key must include 1 and 2; the value must be number');
-    }
-    if (!effectiveTimeInSeconds) {
-        throw new Error('effectiveTimeInSeconds required');
-    }
-    else if (typeof secret !== 'string') {
-        throw new Error('effectiveTimeInSeconds is not number');
+    if (!effectiveTimeInSeconds || typeof effectiveTimeInSeconds !== 'number') {
+        throw {
+            errorCode: ErrorCode.effectiveTimeInSecondsInvalid,
+            errorMessage: 'effectiveTimeInSeconds invalid'
+        };
     }
     var createTime = Math.floor(new Date().getTime() / 1000);
     var tokenInfo = {
@@ -116,4 +132,4 @@ function getToken(appId, roomId, userId, privilege, secret, effectiveTimeInSecon
     // console.log('-----------------');
     return '03' + Buffer.from(dv.buffer).toString('base64');
 }
-exports.getToken = getToken;
+exports.generateToken = generateToken;

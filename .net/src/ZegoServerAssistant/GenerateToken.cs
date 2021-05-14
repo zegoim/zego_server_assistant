@@ -8,9 +8,21 @@ using System.Threading.Tasks;
 
 namespace ZegoServerAssistant
 {
+
+    public enum ErrorCode
+    {
+        success = 0,  // "success"
+        appIDInvalid = 1,  // "appID invalid"
+        roomIDInvalid = 2,  // "roomID invalid"
+        userIDInvalid = 3,  // "userID invalid"
+        privilegeInvalid = 4,  // "privilege key must include 1 and 2; the value must be number"
+        secretInvalid = 5,  // "secret must be a 32 byte string"
+        effectiveTimeInSecondsInvalid = 6  // "effectiveTimeInSeconds invalid"
+    };
+
     public class ErrorInfo
     {
-        public int errorCode;
+        public ErrorCode errorCode;
         public string errorMessage;
     }
 
@@ -20,9 +32,9 @@ namespace ZegoServerAssistant
         public ErrorInfo errorInfo;
     }
 
-    public static class GenerateToken
+    public static class ServerAssistant
     {
-        public static GenerateTokenResult GetToken(uint appID, string roomID, string userID, Dictionary<int, int> privilege, string secret, long effectiveTimeInSeconds)
+        public static GenerateTokenResult GenerateToken(uint appID, string roomID, string userID, Dictionary<int, int> privilege, string secret, long effectiveTimeInSeconds)
         {
             GenerateTokenResult result = new GenerateTokenResult();
             result.errorInfo = new ErrorInfo();
@@ -33,42 +45,42 @@ namespace ZegoServerAssistant
             {
                 if (appID == 0)
                 {
-                    result.errorInfo.errorCode = 1;
+                    result.errorInfo.errorCode = ErrorCode.appIDInvalid;
                     result.errorInfo.errorMessage = "appID invalid";
                     break;
                 }
 
                 if (roomID == null)
                 {
-                    result.errorInfo.errorCode = 2;
+                    result.errorInfo.errorCode = ErrorCode.roomIDInvalid;
                     result.errorInfo.errorMessage = "roomID invalid";
                     break;
                 }
 
                 if (userID == null)
                 {
-                    result.errorInfo.errorCode = 3;
+                    result.errorInfo.errorCode = ErrorCode.userIDInvalid;
                     result.errorInfo.errorMessage = "userID invalid";
                     break;
                 }
 
                 if (privilege.Count != 2 || !privilege.ContainsKey(1) || !privilege.ContainsKey(2))
                 {
-                    result.errorInfo.errorCode = 4;
+                    result.errorInfo.errorCode = ErrorCode.privilegeInvalid;
                     result.errorInfo.errorMessage = "privilege key must include 1 and 2; the value must be number";
                     break;
                 }
 
                 if (secret.Length != 32)
                 {
-                    result.errorInfo.errorCode = 5;
-                    result.errorInfo.errorMessage = "secret must 32 byte length string";
+                    result.errorInfo.errorCode = ErrorCode.secretInvalid;
+                    result.errorInfo.errorMessage = "secret must be a 32 byte string";
                     break;
                 }
 
                 if (effectiveTimeInSeconds <= 0)
                 {
-                    result.errorInfo.errorCode = 6;
+                    result.errorInfo.errorCode = ErrorCode.effectiveTimeInSecondsInvalid;
                     result.errorInfo.errorMessage = "effectiveTimeInSeconds invalid";
                     break;
                 }

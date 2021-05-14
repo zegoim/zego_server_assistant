@@ -19,7 +19,7 @@ class ZegoServerAssistant {
         return implode('',$result);
     }
     
-    public static function getToken(int $appId, string $roomId, string $userId ,array $privilege ,string $secret ){
+    public static function generateToken(int $appId, string $roomId, string $userId ,array $privilege ,string $secret ){
         
         $forTestNoce = -626114709072274507;//9223372036854775807
         $forTestCreateTime = 1619769776;

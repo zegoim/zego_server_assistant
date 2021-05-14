@@ -26,7 +26,7 @@ $appId = 1;
 $roomId = 'demo';
 $userId = 'demo';
 $secret = 'fa94dd0f974cf2e293728a526b028271';
-$token = ZegoServerAssistant::getToken($appId,$roomId,$userId,["1"=> 1, "2"=>1],$secret);
+$token = ZegoServerAssistant::generateToken($appId,$roomId,$userId,["1"=> 1, "2"=>1],$secret);
 print_r($token);
 ```
 
@@ -44,7 +44,7 @@ $appId = 1;
 $roomId = 'demo';
 $userId = 'demo';
 $secret = 'fa94dd0f974cf2e293728a526b028271';
-$token = ZegoServerAssistant::getToken($appId,$roomId,$userId,["1"=> 1, "2"=>1],$secret);
+$token = ZegoServerAssistant::generateToken($appId,$roomId,$userId,["1"=> 1, "2"=>1],$secret);
 print_r($token);
 ```
 
@@ -80,7 +80,7 @@ $appId = 1;
 $roomId = 'demo';
 $userId = 'demo';
 $secret = 'fa94dd0f974cf2e293728a526b028271';
-$token = ZegoServerAssistant::getToken($appId,$roomId,$userId,["1"=> 1, "2"=>1],$secret);
+$token = ZegoServerAssistant::generateToken($appId,$roomId,$userId,["1"=> 1, "2"=>1],$secret);
 print_r($token);
 ```
 
@@ -98,6 +98,6 @@ $appId = 1;
 $roomId = 'demo';
 $userId = 'demo';
 $secret = 'fa94dd0f974cf2e293728a526b028271';
-$token = ZegoServerAssistant::getToken($appId,$roomId,$userId,["1"=> 1, "2"=>1],$secret);
+$token = ZegoServerAssistant::generateToken($appId,$roomId,$userId,["1"=> 1, "2"=>1],$secret);
 print_r($token);
 ```

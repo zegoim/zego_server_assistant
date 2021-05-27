@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
 ## 源码引入方式使用说明
 
-1. 前往 [Github 代码托管地址]() 下载最新代码。
+1. 前往 [Github 代码托管地址](https://github.com/zegoim/zego_server_assistant) 下载最新代码。
 2. 需要安装模块：`Crypto.Cipher`用于 AES 加密
 
    ```shell

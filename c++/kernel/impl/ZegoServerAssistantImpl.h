@@ -13,7 +13,7 @@ struct TokenParams {
     int64_t            createTime;
     int64_t            expireTime;
     int64_t            nonce;
-    TokenParams(uint32_t appID1, std::string roomID1, std::string userID1, std::map<int, int> privilege1,
+    TokenParams(uint32_t appID1, const std::string& roomID1, const std::string& userID1, const std::map<int, int>& privilege1,
       int64_t createTime1, int64_t expireTime1, int64_t nonce1)
       : appID(appID1), roomID(roomID1), userID(userID1), privilege(privilege1), createTime(createTime1),
         expireTime(expireTime1), nonce(nonce1)

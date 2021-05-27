@@ -1,6 +1,5 @@
 include (${CMAKE_HOME_DIRECTORY}/kernel/modules/CMakeLists.txt) # MODULES_SOURCES
 
-# INTERFACE_SOURCES
 file(GLOB_RECURSE INTERFACE_SOURCES 	
     ${CMAKE_CURRENT_LIST_DIR}/include/*.cpp
     ${CMAKE_CURRENT_LIST_DIR}/include/*.c 

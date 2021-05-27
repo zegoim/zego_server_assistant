@@ -19,8 +19,60 @@ class ZegoServerAssistant {
         return implode('',$result);
     }
     
-    public static function generateToken(int $appId, string $roomId, string $userId ,array $privilege ,string $secret ){
+    /**
+     * 根据所提供的参数列表生成用于与即构服务端通信的鉴权
+     *
+     * @param integer $appId Zego派发的数字ID, 各个开发者的唯一标识
+     * @param string $roomId 房间 ID
+     * @param string $userId 用户 ID
+     * @param array $privilege 房间权限
+     * @param string $secret 由即构提供的与 appId 对应的密钥，请妥善保管，切勿外泄
+     * @param integer $effectiveTimeInSeconds token 的有效时长，单位：秒
+     * @return ZegoAssistantToken 返回 token 内容，在使用前，请检查 code 字段是否为 ZegoErrorCodes::success。实际 token 内容保存在 token 字段中
+     */
+    public static function generateToken(int $appId, string $roomId, string $userId ,array $privilege ,string $secret,int $effectiveTimeInSeconds ){
+        $assistantToken = new ZegoAssistantToken();
+
+        $assistantToken->code = ZegoErrorCodes::success;
+
+        if ( $appId == 0 ) {
+            $assistantToken->code = ZegoErrorCodes::appIDInvalid;
+            $assistantToken->message = 'appID invalid';
+            return $assistantToken;
+        }
+
+        if ( $roomId == "" ) {
+            $assistantToken->code = ZegoErrorCodes::roomIDInvalid;
+            $assistantToken->message = 'roomID invalid';
+            return $assistantToken;
+        }
         
+        if ($userId == "") {
+            $assistantToken->code = ZegoErrorCodes::userIDInvalid;
+            $assistantToken->message = 'userID invalid';
+            return $assistantToken;
+        }
+
+        if (empty($privilege)) {
+            $assistantToken->code = ZegoErrorCodes::privilegeInvalid;
+            $assistantToken->message = 'privilege invalid';//privilege key must include 1 and 2; the value must be number
+            return $assistantToken;
+        }
+
+        $keyLen = strlen($secret);
+
+        if ($keyLen != 32) {
+            $assistantToken->code = ZegoErrorCodes::secretInvalid;
+            $assistantToken->message = 'secret must be a 32 byte string';
+            return $assistantToken;
+        }
+
+        if ($effectiveTimeInSeconds <= 0) {
+            $assistantToken->code = ZegoErrorCodes::effectiveTimeInSecondsInvalid;
+            $assistantToken->message = 'effectiveTimeInSeconds invalid';
+            return $assistantToken;
+        }
+
         $forTestNoce = -626114709072274507;//9223372036854775807
         $forTestCreateTime = 1619769776;
         $forTestIv = "exn62lbokoa8n8jp";
@@ -41,15 +93,13 @@ class ZegoServerAssistant {
             'user_id' =>     $userId,
             'privilege' =>   $privilege,//map[int]int
             'create_time' => $timestamp,
-            'expire_time' => $timestamp + 3600,
+            'expire_time' => $timestamp + $effectiveTimeInSeconds,
             'nonce'       => $nonce,
         ];
     
         $cipher = 'aes-128-cbc';
         
         $plaintext = json_encode($data,JSON_BIGINT_AS_STRING);
-    
-        $keyLen = strlen($secret);
     
         switch($keyLen){
             case 16:
@@ -93,7 +143,8 @@ class ZegoServerAssistant {
     
         //"03"字符串 + base64编码binary为字符串
         //print_r(unpack('qq/nn/a*a',$binary));
-    
-        return '03'.base64_encode($binary);
+
+        $assistantToken->token = '03'.base64_encode($binary);
+        return $assistantToken;
     }
 }

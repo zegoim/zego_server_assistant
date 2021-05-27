@@ -1,10 +1,3 @@
-//
-//  ZegoCrypto.cpp
-//  zegoavkit
-//
-//  Created by Randy Qiu on 3/27/16.
-//  Copyright © 2016 Zego. All rights reserved.
-//
 #include <assert.h>
 #include <cstring>
 

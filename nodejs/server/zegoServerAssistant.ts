@@ -10,6 +10,11 @@ enum ErrorCode {
     effectiveTimeInSecondsInvalid = 6, // "effectiveTimeInSeconds invalid"
 }
 
+interface KPrivilege {
+    canLoginRoom: boolean;
+    canPublishStream: boolean;
+}
+
 interface ErrorInfo {
     errorCode: ErrorCode; // 错误码来自 ErrorCode
     errorMessage: string; // 对错误码的详细描述
@@ -59,7 +64,7 @@ export function generateToken(
     appId: number,
     roomId: string,
     userId: string,
-    privilege: { [index: number]: number },
+    privilege: KPrivilege,
     secret: string,
     effectiveTimeInSeconds: number,
 ): string {
@@ -94,26 +99,20 @@ export function generateToken(
     if (
         !privilege ||
         typeof privilege !== 'object' ||
-        typeof privilege[1] !== 'number' ||
-        typeof privilege[2] !== 'number'
+        typeof privilege.canLoginRoom !== 'boolean' ||
+        typeof privilege.canPublishStream !== 'boolean'
     ) {
         throw {
             errorCode: ErrorCode.privilegeInvalid,
-            errorMessage: 'privilege key must include 1 and 2; the value must be number',
+            errorMessage: 'privilege key must include canLoginRoom and canPublishStream; the value must be boolean',
         };
     }
 
-    if (
-        !privilege ||
-        typeof privilege !== 'object' ||
-        typeof privilege[1] !== 'number' ||
-        typeof privilege[2] !== 'number'
-    ) {
-        throw {
-            errorCode: ErrorCode.privilegeInvalid,
-            errorMessage: 'privilege key must include 1 and 2; the value must be number',
-        };
-    }
+    const _privilege = {
+        1: privilege.canLoginRoom ? 1 : 0,
+        2: privilege.canPublishStream ? 1 : 0,
+    };
+
     if (!effectiveTimeInSeconds || typeof effectiveTimeInSeconds !== 'number') {
         throw {
             errorCode: ErrorCode.effectiveTimeInSecondsInvalid,
@@ -126,7 +125,7 @@ export function generateToken(
         app_id: appId,
         room_id: roomId,
         user_id: userId,
-        privilege: privilege,
+        privilege: _privilege,
         create_time: createTime,
         expire_time: createTime + effectiveTimeInSeconds,
         nonce: makeNonce(),
@@ -163,3 +162,7 @@ export function generateToken(
     // console.log('-----------------');
     return '03' + Buffer.from(dv.buffer).toString('base64');
 }
+
+const secret = 'b0d996aecc46ad51600ea853bb378c18';
+const token = generateToken(2913569222, '127', 'zhaowei', { canLoginRoom: true, canPublishStream: true }, secret, 3600);
+console.log(token);

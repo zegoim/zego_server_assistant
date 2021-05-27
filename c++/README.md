@@ -103,6 +103,6 @@ make
 
 ## 源码引入方式使用说明
 
-1. 前往 [Github 代码托管地址]() 下载最新代码。
+1. 前往 [Github 代码托管地址](https://github.com/zegoim/zego_server_assistant) 下载最新代码。
 2. 若项目中已使用了 rapidjson，可以修改 ZegoServerAssistant 项目中 rapidjson 的头文件引入路径，并无需引入 common/rapidjson。
 3. 引入 ZegoServerAssistant 源码后，需要将文件加入项目的搜索路径，按照上文使用说明使用 GenerateToken 方法。

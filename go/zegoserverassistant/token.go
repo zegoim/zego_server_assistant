@@ -11,6 +11,8 @@ import (
 	"io"
 	"math/rand"
 	"time"
+
+	"github.com/zegoim/zego-server-sdk-go/zegoserverassistant/errors"
 )
 
 const (
@@ -32,19 +34,19 @@ type TokenInfo struct {
 
 func GenerateToken(appId uint32, roomId, userId string, privilege map[int]int, secret string, effectiveTimeInSeconds int64) (string, error) {
 	if appId == 0 {
-		return "", fmt.Errorf("appId Invalid")
+		return "", errors.NewZegoSDKError(errors.InvalidParamErrorCode, "appId Invalid")
 	}
 	if roomId == "" {
-		return "", fmt.Errorf("roomId Invalid")
+		return "", errors.NewZegoSDKError(errors.InvalidParamErrorCode, "roomId Invalid")
 	}
 	if userId == "" {
-		return "", fmt.Errorf("userId Invalid")
+		return "", errors.NewZegoSDKError(errors.InvalidParamErrorCode, "userId Invalid")
 	}
 	if len(secret) != 32 {
-		return "", fmt.Errorf("secret Invalid")
+		return "", errors.NewZegoSDKError(errors.InvalidParamErrorCode, "secret Invalid")
 	}
 	if effectiveTimeInSeconds <= 0 {
-		return "", fmt.Errorf("effectiveTimeInSeconds Invalid")
+		return "", errors.NewZegoSDKError(errors.InvalidParamErrorCode, "effectiveTimeInSeconds Invalid")
 	}
 	tokenInfo := &TokenInfo{
 		AppId:      appId,
@@ -58,7 +60,7 @@ func GenerateToken(appId uint32, roomId, userId string, privilege map[int]int, s
 	// 把token信息转成json
 	plaintText, err := json.Marshal(tokenInfo)
 	if err != nil {
-		return "", err
+		return "", errors.NewZegoSDKError(errors.JsonUnmarshalErrorCode, err.Error())
 	}
 
 	// 随机生成的 16 字节串，用作 AES 加密向量，放在密文前一起做Base64编码生成最终 token
@@ -67,7 +69,7 @@ func GenerateToken(appId uint32, roomId, userId string, privilege map[int]int, s
 	// AES加密，使用模式: CBC/PKCS5Padding
 	encryptBuf, err := aesEncrypt(plaintText, []byte(secret), iv)
 	if err != nil {
-		return "", fmt.Errorf("EncryptToken: AesEncrypt error:%s, plaintText:%s, iv:%s", err.Error(), plaintText, iv)
+		return "", errors.NewZegoSDKError(errors.EncryptErrorCode, fmt.Sprintf("AesEncrypt error:%s, plaintText:%s, iv:%s", err.Error(), plaintText, iv))
 	}
 
 	// len+data
@@ -77,15 +79,15 @@ func GenerateToken(appId uint32, roomId, userId string, privilege map[int]int, s
 	// 打包数据
 	err = packInt64(result, tokenInfo.ExpireTime)
 	if err != nil {
-		return "", fmt.Errorf("EncodeToken:PackData1 error:%s, timeout:%d, result%s", err, tokenInfo.ExpireTime, result)
+		return "", errors.NewZegoSDKError(errors.EncodeErrorCode, fmt.Sprintf("PackData1 error:%s, timeout:%d, result%s", err, tokenInfo.ExpireTime, result))
 	}
 	err = packString(result, string(iv))
 	if err != nil {
-		return "", fmt.Errorf("EncodeToken:PackData2 error:%s, iv:%d, result%s", err, iv, result)
+		return "", errors.NewZegoSDKError(errors.EncodeErrorCode, fmt.Sprintf("PackData2 error:%s, iv:%d, result%s", err, iv, result))
 	}
 	err = packString(result, string(encryptBuf))
 	if err != nil {
-		return "", fmt.Errorf("EncodeToken:PackData3 error:%s, cryptedData:%d, result%s", err, encryptBuf, result)
+		return "", errors.NewZegoSDKError(errors.EncodeErrorCode, fmt.Sprintf("PackData3 error:%s, cryptedData:%d, result%s", err, encryptBuf, result))
 	}
 
 	thirdToken := "03" + base64.StdEncoding.EncodeToString(result.Bytes())

@@ -7,10 +7,8 @@ else (LINUX)
 endif()
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE 
-        -D V_LOG # xplatform
-        -D ZEGO_EXPORTS # dll 到处接口符号
-        # -DRAPIDJSON_HAS_STDSTRING # rapid json
-        # -D_WINSOCKAPI_
+        -D V_LOG
+        -D ZEGO_EXPORTS 
 )
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE -DZEGO_SDK_VER="${ZEGO_SDK_VER}")

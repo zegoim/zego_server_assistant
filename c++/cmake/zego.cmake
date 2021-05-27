@@ -31,14 +31,12 @@ MACRO(ZEGO_LIST_SOURCE_DIR result curdir)
     FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
     SET(dirlist "")
 
-    # APPEND all
     FOREACH(child ${children})
         IF(IS_DIRECTORY ${curdir}/${child})
             LIST(APPEND dirlist ${child})
         ENDIF()
     ENDFOREACH()
 
-    # REMOVE some
     FILE(GLOB children RELATIVE ${curdir} ${curdir}/XXXXX*)
     FOREACH(child ${children})
         IF(IS_DIRECTORY ${curdir}/${child})

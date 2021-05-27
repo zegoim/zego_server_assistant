@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var crypto_1 = require("crypto");
 var ErrorCode;
 (function (ErrorCode) {
@@ -49,49 +49,44 @@ function generateToken(appId, roomId, userId, privilege, secret, effectiveTimeIn
     if (!appId || typeof appId !== 'number') {
         throw {
             errorCode: ErrorCode.appIDInvalid,
-            errorMessage: 'appID invalid'
+            errorMessage: 'appID invalid',
         };
     }
     if (!roomId || typeof roomId !== 'string') {
         throw {
             errorCode: ErrorCode.roomIDInvalid,
-            errorMessage: 'roomID invalid'
+            errorMessage: 'roomID invalid',
         };
     }
     if (!userId || typeof userId !== 'string') {
         throw {
             errorCode: ErrorCode.userIDInvalid,
-            errorMessage: 'userId invalid'
+            errorMessage: 'userId invalid',
         };
     }
     if (!secret || typeof secret !== 'string' || secret.length !== 32) {
         throw {
             errorCode: ErrorCode.secretInvalid,
-            errorMessage: 'secret must be a 32 byte string'
+            errorMessage: 'secret must be a 32 byte string',
         };
     }
     if (!privilege ||
         typeof privilege !== 'object' ||
-        typeof privilege[1] !== 'number' ||
-        typeof privilege[2] !== 'number') {
+        typeof privilege.canLoginRoom !== 'boolean' ||
+        typeof privilege.canPublishStream !== 'boolean') {
         throw {
             errorCode: ErrorCode.privilegeInvalid,
-            errorMessage: 'privilege key must include 1 and 2; the value must be number'
+            errorMessage: 'privilege key must include canLoginRoom and canPublishStream; the value must be boolean',
         };
     }
-    if (!privilege ||
-        typeof privilege !== 'object' ||
-        typeof privilege[1] !== 'number' ||
-        typeof privilege[2] !== 'number') {
-        throw {
-            errorCode: ErrorCode.privilegeInvalid,
-            errorMessage: 'privilege key must include 1 and 2; the value must be number'
-        };
-    }
+    var _privilege = {
+        1: privilege.canLoginRoom ? 1 : 0,
+        2: privilege.canPublishStream ? 1 : 0,
+    };
     if (!effectiveTimeInSeconds || typeof effectiveTimeInSeconds !== 'number') {
         throw {
             errorCode: ErrorCode.effectiveTimeInSecondsInvalid,
-            errorMessage: 'effectiveTimeInSeconds invalid'
+            errorMessage: 'effectiveTimeInSeconds invalid',
         };
     }
     var createTime = Math.floor(new Date().getTime() / 1000);
@@ -99,10 +94,10 @@ function generateToken(appId, roomId, userId, privilege, secret, effectiveTimeIn
         app_id: appId,
         room_id: roomId,
         user_id: userId,
-        privilege: privilege,
+        privilege: _privilege,
         create_time: createTime,
         expire_time: createTime + effectiveTimeInSeconds,
-        nonce: makeNonce()
+        nonce: makeNonce(),
     };
     // 把token信息转成json
     var plaintText = JSON.stringify(tokenInfo);
@@ -133,3 +128,6 @@ function generateToken(appId, roomId, userId, privilege, secret, effectiveTimeIn
     return '03' + Buffer.from(dv.buffer).toString('base64');
 }
 exports.generateToken = generateToken;
+var secret = 'b0d996aecc46ad51600ea853bb378c18';
+var token = generateToken(2913569222, '127', 'zhaowei', { canLoginRoom: true, canPublishStream: true }, secret, 3600);
+console.log(token);

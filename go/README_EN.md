@@ -51,4 +51,3 @@ fmt.Println(token)
 1. Go to [Github - zego_server_assistant](https://github.com/zegoim/zego_server_assistant) to download the latest codes.
 2. Copy the go/zegoserverassistant directory to your project.
 3. `import zsa "your-project-go-mod-path/zegoserverassistant"`
-{"mode":"full","isActive":false}

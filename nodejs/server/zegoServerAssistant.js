@@ -128,6 +128,3 @@ function generateToken(appId, roomId, userId, privilege, secret, effectiveTimeIn
     return '03' + Buffer.from(dv.buffer).toString('base64');
 }
 exports.generateToken = generateToken;
-var secret = 'b0d996aecc46ad51600ea853bb378c18';
-var token = generateToken(2913569222, '127', 'zhaowei', { canLoginRoom: true, canPublishStream: true }, secret, 3600);
-console.log(token);

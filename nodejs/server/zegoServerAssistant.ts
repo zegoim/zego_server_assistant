@@ -162,7 +162,3 @@ export function generateToken(
     // console.log('-----------------');
     return '03' + Buffer.from(dv.buffer).toString('base64');
 }
-
-const secret = 'b0d996aecc46ad51600ea853bb378c18';
-const token = generateToken(2913569222, '127', 'zhaowei', { canLoginRoom: true, canPublishStream: true }, secret, 3600);
-console.log(token);

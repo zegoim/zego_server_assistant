@@ -1,4 +1,4 @@
-package im.zego.serverassistant;
+package im.zego.serverassistant.utils;
 
 import org.json.simple.JSONObject;
 

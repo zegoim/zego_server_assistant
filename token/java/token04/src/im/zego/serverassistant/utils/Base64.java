@@ -23,7 +23,7 @@
  * questions.
  */
 
-package im.zego.serverassistant;
+package im.zego.serverassistant.utils;
 
 import java.io.FilterOutputStream;
 import java.io.IOException;

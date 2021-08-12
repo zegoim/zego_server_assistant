@@ -1,4 +1,4 @@
-package im.zego.serverassistant;
+package im.zego.serverassistant.sample;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -9,6 +9,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 
+import im.zego.serverassistant.utils.TokenServerAssistant;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 

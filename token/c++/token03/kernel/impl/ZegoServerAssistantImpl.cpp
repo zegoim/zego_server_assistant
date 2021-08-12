@@ -8,7 +8,7 @@
 #include <arpa/inet.h>
 #endif
 
-#include "../modules/common/ZegoCrypto.hpp"
+#include <common/ZegoCrypto.hpp>
 #include "Base64.h"
 #include "ZegoServerAssistantImpl.h"
 #include "json_tools.hpp"
@@ -17,13 +17,14 @@ namespace ZEGO
 {
 namespace SERVER_ASSISTANT
 {
-    std::string ZegoServerAssistantImpl::GenerateToken(uint32_t appID, const std::string& userID, const std::string& secret, int64_t effectiveTimeInSeconds)
+    std::string ZegoServerAssistantImpl::GenerateToken(uint32_t appID, const std::string& roomID, const std::string& userID,
+      const std::map<int, int>& privilege, const std::string& secret, int64_t effectiveTimeInSeconds)
     {
         time_t createTime;
         time(&createTime);
         time_t      expireTime = createTime + effectiveTimeInSeconds;
-        int32_t    nonce      = MakeNonce();
-        TokenParams params(appID, userID, createTime, expireTime, nonce);
+        uint64_t    nonce      = MakeNonce();
+        TokenParams params(appID, roomID, userID, privilege, createTime, expireTime, nonce);
 
         std::string plainText = TokenToJson(params);
 
@@ -66,16 +67,16 @@ namespace SERVER_ASSISTANT
         char* outbuffer = new char[outLen1 + 1];
         int   outLen2   = base64_encode(outbuffer, (char*) buffer.c_str(), buffer.size());
 
-        std::string result = "04" + std::string(outbuffer, outLen2);
+        std::string result = "03" + std::string(outbuffer, outLen2);
         delete[] outbuffer;
         outbuffer = nullptr;
         return result;
     }
 
-    int32_t ZegoServerAssistantImpl::MakeNonce()
+    int64_t ZegoServerAssistantImpl::MakeNonce()
     {
         srand(unsigned(time(0)));
-        int32_t nonce = (int32_t) rand();
+        int64_t nonce = (int64_t) rand();
         return nonce;
     }
 
@@ -96,13 +97,17 @@ namespace SERVER_ASSISTANT
         document.SetObject();
         rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
         JSON_TOOLS::AddMember(document, "app_id", params.appID, allocator);
+        JSON_TOOLS::AddMember(document, "room_id", params.roomID.c_str(), allocator);
         JSON_TOOLS::AddMember(document, "user_id", params.userID.c_str(), allocator);
+        rapidjson::Value privilege(rapidjson::kObjectType);
+        for (auto member : params.privilege) {
+            JSON_TOOLS::AddMember(privilege, std::to_string(member.first).c_str(), member.second, allocator);
+        }
+        JSON_TOOLS::AddMember(document, "privilege", &privilege, allocator);
+        JSON_TOOLS::AddMember(document, "create_time", params.createTime, allocator);
+        JSON_TOOLS::AddMember(document, "expire_time", params.expireTime, allocator);
         JSON_TOOLS::AddMember(document, "nonce", params.nonce, allocator);
-        JSON_TOOLS::AddMember(document, "ctime", params.createTime, allocator);
-        JSON_TOOLS::AddMember(document, "expire", params.expireTime, allocator);
-        JSON_TOOLS::AddMember(document, "payload", params.payload.c_str(), allocator);
         std::string result = JSON_TOOLS::JsonTools::rapiJsonToStr(document);
-
         return result;
     }
 

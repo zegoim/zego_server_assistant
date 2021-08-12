@@ -28,15 +28,12 @@ namespace ZEGO
 		std::string CZegoCrypto::PKCS7Padding(const std::string& plainText)
 		{
 			uint32_t fitSize = plainText.size();
-			if (fitSize % BLOCK_SIZE != 0)
-			{
-				fitSize = (fitSize / BLOCK_SIZE + 1) * BLOCK_SIZE;
-			}
-
+			fitSize = (fitSize / BLOCK_SIZE + 1) * BLOCK_SIZE;
+			
 			std::string padded;
 			padded.resize(fitSize);
 			
-			memset((char*)padded.c_str(), fitSize-plainText.size(), sizeof(BYTE) * fitSize);
+			memset((char*)padded.c_str(), fitSize - plainText.size(), sizeof(BYTE) * fitSize);
 			memcpy((char*)padded.c_str(), plainText.c_str(), plainText.size());
 
 			return padded;

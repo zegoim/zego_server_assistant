@@ -1,3 +1,3 @@
-module github.com/zegoim/zego-server-sdk-go
+module github.com/zegoim/zego_server_assistant/token/go/src
 
-go 1.15
+go 1.16

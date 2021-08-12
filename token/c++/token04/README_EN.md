@@ -12,18 +12,6 @@
 using namespace ZEGO::SERVER_ASSISTANT;
 ```
 
-## Room privileges description
-
-```c++
-enum ZEGOSA_API kPrivilege
-{
-    kPrivilegeLogin = 1,  // The "key" value of the map in the privilege class, used to determine whether the user has the privilege to log in to a room; 
-                          // "value" : 0 means deny, 1 means allow.
-    kPrivilegePublish = 2  // The "key" value of the map in the privilege class, used to determine whether the user has the privilege to publish streams;
-                           // "value" : 0 means deny, 1 means allow.
-};
-```
-
 ## Error codes description
 
 ```c++
@@ -31,27 +19,23 @@ enum ErrorCode
     {
         success                       = 0,  // Token for authentication obtained successfully.
         appIDInvalid                  = 1,  // App ID parameter is invalid.
-        roomIDInvalid                 = 2,  // Room ID parameter is invalid.
         userIDInvalid                 = 3,  // User ID parameter is invalid.
-        privilegeInvalid              = 4,  // Privilege parameter is invalid.
         secretInvalid                 = 5,  // Secret parameter is invalid.
         effectiveTimeInSecondsInvalid = 6   // effectiveTimeInSeconds parameter is invalid.
     };
 ```
 
-## GenerateToken parameters description and return codes
+## GenerateToken04 parameters description and return codes
 
 ```c++
 // Parameters
 uint32_t appID;  // App ID assigned by ZEGO, the unique identifier of user.
-std::string roomID;  // Room ID
 std::string userID;  //   User ID
-std::map<int, int> privilege;  // Room privilege
 std::string secret;   // The secret key for AES encryption when applying for token.
 int64_t effectiveTimeInSeconds;  // The validity period of token, unit: second
 
 // Return codes
-ZegoTokenResult result;  // Struct contains two members:  token、 errorInfo; errorInfo includes errorCode, errorMessage
+ZegoToken04Result result;  // Struct contains two members:  token、 errorInfo; errorInfo includes errorCode, errorMessage
 ```
 
 ## demo
@@ -60,16 +44,10 @@ ZegoTokenResult result;  // Struct contains two members:  token、 errorInfo; er
 int main() 
 {
     uint32_t appID = 1;
-    std::string roomID = "demo";
     std::string userID = "demo";
-    std::map<int, int> privilege;
-    privilege.insert(std::make_pair(kPrivilegeLogin, 1));
-    privilege.insert(std::make_pair(kPrivilegePublish, 1));
-    std::string secret = "fa94dd0f974cf2e293728a526b028271";
+    std::string secret = "12345678900987654321123456789012";
     uint64_t effectiveTimeInSeconds = 3600;
-    ZegoTokenResult result = ZegoServerAssistant::GenerateToken(appID, roomID,
-      userID, privilege,
-      secret, effectiveTimeInSeconds);
+    ZegoTokenResult result = ZegoServerAssistant::GenerateToken04(appID, userID, secret, effectiveTimeInSeconds);
     printf("%s\n", result.token.c_str());
     printf("error code : %d", result.errorCode);
     return 0;

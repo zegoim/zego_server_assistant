@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.6)
 
-project(token04_generator_sln)
+project(zego_server_assistant_sln)
 
 # cmake include
 include (${CMAKE_HOME_DIRECTORY}/cmake/zego.cmake)
 
 # main project
-project(token04_generator)
+project(zego_server_assistant)
 message(${PROJECT_NAME})
 include(${CMAKE_HOME_DIRECTORY}/kernel/CMakeLists.txt)
 

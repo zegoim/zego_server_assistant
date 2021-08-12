@@ -12,7 +12,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/zegoim/zego_server_assistant/token/go/src/token/errors"
+	"github.com/zegoim/zego_server_assistant/token/go/src/errors"
 )
 
 const (

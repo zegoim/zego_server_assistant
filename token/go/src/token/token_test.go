@@ -1,4 +1,4 @@
-package zegoserverassistant
+package token
 
 import (
 	"fmt"

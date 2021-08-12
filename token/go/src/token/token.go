@@ -1,4 +1,4 @@
-package zegoserverassistant
+package token
 
 import (
 	"bytes"
@@ -12,7 +12,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/zegoim/zego-server-sdk-go/zegoserverassistant/errors"
+	"github.com/zegoim/zego_server_assistant/token/go/src/token/errors"
 )
 
 const (

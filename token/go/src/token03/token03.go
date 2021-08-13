@@ -1,4 +1,4 @@
-package token
+package token03
 
 import (
 	"bytes"
@@ -32,7 +32,7 @@ type TokenInfo struct {
 	Nonce      int64       `json:"nonce"`
 }
 
-func GenerateToken(appId uint32, roomId, userId string, privilege map[int]int, secret string, effectiveTimeInSeconds int64) (string, error) {
+func GenerateToken03(appId uint32, roomId, userId string, privilege map[int]int, secret string, effectiveTimeInSeconds int64) (string, error) {
 	if appId == 0 {
 		return "", errors.NewZegoSDKError(errors.InvalidParamErrorCode, "appId Invalid")
 	}

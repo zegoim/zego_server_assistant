@@ -23,7 +23,7 @@ public enum ErrorCode
 };
 ```
 
-## GenerateToken parameters and return codes
+## GenerateToken04 parameters and return codes
 
 ```c#
 /**
@@ -34,7 +34,7 @@ public enum ErrorCode
  * @param effectiveTimeInSeconds The validity period of token, unit: second
  * @return Returned token content. Before using the token, check whether the errorInfo field is SUCCESS. The actual token content is stored in the token field.
  */
-public static GenerateTokenResult GenerateToken(uint appID, string userID, string secret, long effectiveTimeInSeconds)
+public static GenerateTokenResult GenerateToken04(uint appID, string userID, string secret, long effectiveTimeInSeconds)
 ```
 
 ## demo
@@ -44,7 +44,7 @@ public Form1()
 {
 		InitializeComponent();
 
-		ZegoServerAssistant.GenerateTokenResult result = ZegoServerAssistant.ServerAssistant.GenerateToken(1, "111", "12345678900987654321123456789012", 3600);
+		ZegoServerAssistant.GenerateTokenResult result = ZegoServerAssistant.ServerAssistant.GenerateToken04(1, "111", "12345678900987654321123456789012", 3600);
 }
 ```
 

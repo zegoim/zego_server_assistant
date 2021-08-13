@@ -23,7 +23,7 @@ public enum ErrorCode
 };
 ```
 
-## GenerateToken04参数及返回值说明
+## GenerateToken04 参数及返回值说明
 
 ```c#
 /**

@@ -24,7 +24,7 @@ namespace WindowsFormsApp1
             privilege[1] = 1;
             privilege[2] = 1;
 
-            ZegoServerAssistant.GenerateTokenResult result = ZegoServerAssistant.ServerAssistant.GenerateToken(2913569222, "111", "222", privilege, "b0d996aecc46ad51600ea853bb378c18", 3600);
+            ZegoServerAssistant.GenerateTokenResult result = ZegoServerAssistant.ServerAssistant.GenerateToken(1, "111", "222", privilege, "12345678900987654321123456789012", 3600);
         }
     }
 }

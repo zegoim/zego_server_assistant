@@ -32,7 +32,7 @@ namespace ZegoServerAssistant
 
     public static class ServerAssistant
     {
-        public static GenerateTokenResult GenerateToken(uint appID, string userID, string secret, long effectiveTimeInSeconds)
+        public static GenerateTokenResult GenerateToken04(uint appID, string userID, string secret, long effectiveTimeInSeconds)
         {
             GenerateTokenResult result = new GenerateTokenResult();
             result.errorInfo = new ErrorInfo();

@@ -20,7 +20,7 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
 
-            ZegoServerAssistant.GenerateTokenResult result = ZegoServerAssistant.ServerAssistant.GenerateToken(3417014186, "999922222333333", "fa4b7e22b9c73dcdb6e7f7f116b9102a", 3600);
+            ZegoServerAssistant.GenerateTokenResult result = ZegoServerAssistant.ServerAssistant.GenerateToken04(3417014186, "999922222333333", "fa4b7e22b9c73dcdb6e7f7f116b9102a", 3600);
         }
     }
 }

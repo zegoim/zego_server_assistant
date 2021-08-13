@@ -23,7 +23,7 @@ public enum ErrorCode
 };
 ```
 
-## GenerateToken参数及返回值说明
+## GenerateToken04参数及返回值说明
 
 ```c#
 /**
@@ -34,7 +34,7 @@ public enum ErrorCode
  * @param effectiveTimeInSeconds token 的有效时长，单位：秒
  * @return 返回 token 内容，在使用前，请检查 errorInfo 字段是否为 SUCCESS。实际 token 内容保存在 token 字段中
  */
-public static GenerateTokenResult GenerateToken(uint appID, string userID, string secret, long effectiveTimeInSeconds)
+public static GenerateTokenResult GenerateToken04(uint appID, string userID, string secret, long effectiveTimeInSeconds)
 ```
 
 ## demo
@@ -44,7 +44,7 @@ public Form1()
 {
 		InitializeComponent();
 
-		ZegoServerAssistant.GenerateTokenResult result = ZegoServerAssistant.ServerAssistant.GenerateToken(1, "111", "12345678900987654321123456789012", 3600);
+		ZegoServerAssistant.GenerateTokenResult result = ZegoServerAssistant.ServerAssistant.GenerateToken04(1, "111", "12345678900987654321123456789012", 3600);
 }
 ```
 

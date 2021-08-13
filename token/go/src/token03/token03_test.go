@@ -1,10 +1,10 @@
-package token
+package token03
 
 import (
-	"fmt"
+	"testing"
 )
 
-func Example_GenerateToken() {
+func Test_GenerateToken03(t *testing.T) {
 	var appId uint32 = 1
 	roomId := "demo"
 	userId := "demo"
@@ -14,10 +14,10 @@ func Example_GenerateToken() {
 	privilege[PrivilegeKeyLogin] = PrivilegeEnable
 	privilege[PrivilegeKeyPublish] = PrivilegeDisable
 
-	token, err := GenerateToken(appId, roomId, userId, privilege, serverSecret, effectiveTimeInSeconds)
+	token, err := GenerateToken03(appId, roomId, userId, privilege, serverSecret, effectiveTimeInSeconds)
 	if err != nil {
-		fmt.Println(err)
+		t.Error(err)
 		return
 	}
-	fmt.Println(token)
+	t.Log(token)
 }

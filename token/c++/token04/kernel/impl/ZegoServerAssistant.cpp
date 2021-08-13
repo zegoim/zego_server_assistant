@@ -35,7 +35,7 @@ namespace SERVER_ASSISTANT
         }
         ZegoServerAssistantImpl serverAssistantImpl;
         std::string             result
-          = serverAssistantImpl.GenerateToken(appID, userID, secret, effectiveTimeInSeconds);
+          = serverAssistantImpl.GenerateToken04(appID, userID, secret, effectiveTimeInSeconds);
         tokenResult.token                  = result;
         tokenResult.errorInfo.errorCode    = success;
         tokenResult.errorInfo.errorMessage = "success";

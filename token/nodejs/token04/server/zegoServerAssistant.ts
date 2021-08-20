@@ -115,7 +115,7 @@ export function generateToken04(
 
     // token 二进制拼接  过期时间 + Base64(iv长度 + iv + 加密信息长度 + 加密信息)
     const [b1, b2, b3] = [new Uint8Array(8), new Uint8Array(2), new Uint8Array(2)];
-    new DataView(b1.buffer).setBigInt64(0, BigInt(tokenInfo.expire_time), false);
+    new DataView(b1.buffer).setBigInt64(0, BigInt(tokenInfo.expire), false);
     new DataView(b2.buffer).setUint16(0, iv.length, false);
     new DataView(b3.buffer).setUint16(0, encryptBuf.byteLength, false);
     const buf = Buffer.concat([

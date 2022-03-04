@@ -17,13 +17,13 @@ namespace ZEGO
 {
 namespace SERVER_ASSISTANT
 {
-    std::string ZegoServerAssistantImpl::GenerateToken04(uint32_t appID, const std::string& userID, const std::string& secret, int64_t effectiveTimeInSeconds)
+    std::string ZegoServerAssistantImpl::GenerateToken04(uint32_t appID, const std::string& userID, const std::string& secret, int64_t effectiveTimeInSeconds, const std::string& payload)
     {
         time_t createTime;
         time(&createTime);
         time_t      expireTime = createTime + effectiveTimeInSeconds;
         int32_t    nonce      = MakeNonce();
-        TokenParams params(appID, userID, createTime, expireTime, nonce);
+        TokenParams params(appID, userID, createTime, expireTime, nonce, payload);
 
         std::string plainText = TokenToJson(params);
 

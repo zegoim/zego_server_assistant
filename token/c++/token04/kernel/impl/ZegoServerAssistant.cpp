@@ -6,7 +6,7 @@ namespace ZEGO
 {
 namespace SERVER_ASSISTANT
 {
-    ZegoToken04Result ZegoServerAssistant::GenerateToken04(uint32_t appID, const std::string& userID, const std::string& secret, int64_t effectiveTimeInSeconds)
+    ZegoToken04Result ZegoServerAssistant::GenerateToken04(uint32_t appID, const std::string& userID, const std::string& secret, int64_t effectiveTimeInSeconds, const std::string& payload)
     {
         ZegoToken04Result tokenResult;
         if (appID == 0) {
@@ -35,7 +35,7 @@ namespace SERVER_ASSISTANT
         }
         ZegoServerAssistantImpl serverAssistantImpl;
         std::string             result
-          = serverAssistantImpl.GenerateToken04(appID, userID, secret, effectiveTimeInSeconds);
+          = serverAssistantImpl.GenerateToken04(appID, userID, secret, effectiveTimeInSeconds, payload);
         tokenResult.token                  = result;
         tokenResult.errorInfo.errorCode    = success;
         tokenResult.errorInfo.errorMessage = "success";

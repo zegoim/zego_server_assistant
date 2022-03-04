@@ -96,13 +96,13 @@ namespace ZegoServerAssistant
             return result;
         }
 
-        private static Dictionary<string, object> MakeThirdToken(uint appID, string userID, long effectiveTimeInSeconds, string playload)
+        private static Dictionary<string, object> MakeThirdToken(uint appID, string userID, long effectiveTimeInSeconds, string payload)
         {
             Dictionary<string, object> thirdToken = new Dictionary<string, object>();
             thirdToken["app_id"] = appID;
             thirdToken["user_id"] = userID;
             //thirdToken["payload"] = new Dictionary<string, object>();
-            thirdToken["payload"] = playload;
+            thirdToken["payload"] = payload;
 
             TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             long create_time = Convert.ToInt64(ts.TotalSeconds);

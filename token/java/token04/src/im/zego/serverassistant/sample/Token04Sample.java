@@ -21,7 +21,7 @@ public class Token04Sample {
         int effectiveTimeInSeconds = 300;   // 有效时间，单位：秒
 
         TokenServerAssistant.VERBOSE = false;    // 调试时，置为 true, 可在控制台输出更多信息；正式运行时，最好置为 false
-        TokenServerAssistant.TokenInfo token = TokenServerAssistant.generateToken04(appId,  userId, secretKey, effectiveTimeInSeconds);
+        TokenServerAssistant.TokenInfo token = TokenServerAssistant.generateToken04(appId,  userId, secretKey, effectiveTimeInSeconds, "payload");
         System.out.println(token);
 
         if (token.error == null || token.error.code == TokenServerAssistant.ErrorCode.SUCCESS) {

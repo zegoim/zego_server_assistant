@@ -51,7 +51,7 @@ def __aes_encrypy(plain_text, key, iv):
     return encrypt_bytes
 
 
-def generate_token04(app_id, user_id, secret, effective_time_in_seconds):
+def generate_token04(app_id, user_id, secret, effective_time_in_seconds, payload):
     '''基本描述
         获取 token 的方法
     详细描述
@@ -79,7 +79,7 @@ def generate_token04(app_id, user_id, secret, effective_time_in_seconds):
     nonce = __make_nonce()
 
     _token = {"app_id": app_id, "user_id": user_id, "nonce": nonce,
-              "ctime": create_time, "expire": expire_time, "payload": ""}
+              "ctime": create_time, "expire": expire_time, "payload": payload}
     plain_text = json.dumps(_token, separators=(',', ':'), ensure_ascii=False)
 
     iv = __make_random_iv()

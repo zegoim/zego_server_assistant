@@ -9,6 +9,7 @@ var appId uint32 = <Your app ID>   // Zego派发的数字ID, 各个开发者的�
 userId := <Your user ID>   //  用户 ID
 secret := <Your app certificate>  // 在获取 token 时进行 AES 加密的密钥
 var effectiveTimeInSeconds int64 = <Your token effectiveTime>  // token 的有效时长，单位：秒
+var payload string = <Your payload data> //自定义业务数据
 ```
 
 
@@ -18,9 +19,9 @@ var effectiveTimeInSeconds int64 = <Your token effectiveTime>  // token 的有�
 var appId uint32 = 123
 userId := "demo"
 secret := "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-var effectiveTimeInSeconds int64 = 3600
+var payload string = "payload"
 
-token, err := zsa.GenerateToken04(appId, userId, secret, effectiveTimeInSeconds)
+token, err := zsa.GenerateToken04(appId, userId, secret, effectiveTimeInSeconds, payload)
 if err != nil {
     fmt.Println(err)
     return

@@ -32,7 +32,7 @@ namespace ZegoServerAssistant
 
     public static class ServerAssistant
     {
-        public static GenerateTokenResult GenerateToken04(uint appID, string userID, string secret, long effectiveTimeInSeconds)
+        public static GenerateTokenResult GenerateToken04(uint appID, string userID, string secret, long effectiveTimeInSeconds, string payload)
         {
             GenerateTokenResult result = new GenerateTokenResult();
             result.errorInfo = new ErrorInfo();
@@ -70,7 +70,7 @@ namespace ZegoServerAssistant
                     break;
                 }
 
-                Dictionary<string, object> thirdToken = MakeThirdToken(appID, userID, effectiveTimeInSeconds);
+                Dictionary<string, object> thirdToken = MakeThirdToken(appID, userID, effectiveTimeInSeconds, payload);
 
                 string strPlaintText = JsonConvert.SerializeObject(thirdToken);
 
@@ -96,13 +96,13 @@ namespace ZegoServerAssistant
             return result;
         }
 
-        private static Dictionary<string, object> MakeThirdToken(uint appID, string userID, long effectiveTimeInSeconds)
+        private static Dictionary<string, object> MakeThirdToken(uint appID, string userID, long effectiveTimeInSeconds, string payload)
         {
             Dictionary<string, object> thirdToken = new Dictionary<string, object>();
             thirdToken["app_id"] = appID;
             thirdToken["user_id"] = userID;
             //thirdToken["payload"] = new Dictionary<string, object>();
-            thirdToken["payload"] = "";
+            thirdToken["payload"] = payload;
 
             TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             long create_time = Convert.ToInt64(ts.TotalSeconds);

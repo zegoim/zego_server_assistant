@@ -12,8 +12,8 @@ struct TokenParams {
     int64_t            createTime;
     int64_t            expireTime;
     std::string        payload;
-    TokenParams(uint32_t appID1, const std::string& userID1, int64_t createTime1, int64_t expireTime1, int32_t nonce1)
-      : appID(appID1), userID(userID1), createTime(createTime1), expireTime(expireTime1), nonce(nonce1), payload("")
+    TokenParams(uint32_t appID1, const std::string& userID1, int64_t createTime1, int64_t expireTime1, int32_t nonce1, const std::string& payload1)
+      : appID(appID1), userID(userID1), createTime(createTime1), expireTime(expireTime1), nonce(nonce1), payload(payload1)
     {}
 };
 
@@ -24,7 +24,7 @@ namespace SERVER_ASSISTANT
     class ZegoServerAssistantImpl
     {
     public:
-        std::string GenerateToken04(uint32_t appID, const std::string& userID, const std::string& secret, int64_t effectiveTimeInSeconds);
+        std::string GenerateToken04(uint32_t appID, const std::string& userID, const std::string& secret, int64_t effectiveTimeInSeconds, const std::string& payload);
 
     private:
         int32_t MakeNonce();

@@ -10,6 +10,7 @@ const (
 	EncryptErrorCode       = "SDK.EncryptError"
 	EncodeErrorCode        = "SDK.EncodetError"
 	JsonUnmarshalErrorCode = "SDK.JsonUnmarshalError"
+	JsonMarshalErrorCode   = "SDK.JsonMarshalError"
 )
 
 type ZegoSDKError struct {

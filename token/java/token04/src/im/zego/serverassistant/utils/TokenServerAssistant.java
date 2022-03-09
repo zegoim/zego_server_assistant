@@ -117,7 +117,7 @@ public class TokenServerAssistant {
      * @return 返回 token 内容，在使用前，请检查 error 字段是否为 SUCCESS
      */
     static public TokenInfo generateToken04(long appId, String userId, String secret,
-                                          int effectiveTimeInSeconds) {
+                                          int effectiveTimeInSeconds, String payload) {
         TokenInfo token = new TokenInfo();
 
         // check the appId
@@ -168,7 +168,7 @@ public class TokenServerAssistant {
         json.put("expire", expire_time);
         int nonce = new Random().nextInt();
         json.put("nonce", nonce);
-        json.put("payload","");
+        json.put("payload", payload);
         String content = json.toString();
         System.out.println("current nonce: " + nonce);
 

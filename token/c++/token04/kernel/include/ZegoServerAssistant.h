@@ -23,7 +23,7 @@ namespace SERVER_ASSISTANT
          * @param effectiveTimeInSeconds token 的有效时长，单位：秒
          * @return ZegoTokenResult
          */
-        static ZegoToken04Result GenerateToken04(uint32_t appID, const std::string& userID, const std::string& secret, int64_t effectiveTimeInSeconds);
+        static ZegoToken04Result GenerateToken04(uint32_t appID, const std::string& userID, const std::string& secret, int64_t effectiveTimeInSeconds, const std::string& payload);
     };
 }  // namespace SERVER_ASSISTANT
 

@@ -22,6 +22,18 @@ namespace SERVER_ASSISTANT
 {
 
     /**
+     * @brief privilege 中 "key" 的值
+     *
+     */
+    enum kPrivilege
+    {
+        kPrivilegeLogin = 1,   // privilege 中是否允许登录房间的 "key"; map
+                               // 中对应的 "value" : 0 不允许, 1 允许
+        kPrivilegePublish = 2  // privilege 中是否允许推流的 "key"; map 中对应的
+                               // "value" : 0 不允许, 1 允许
+    };
+    
+    /**
      * @brief ZegoServerAssistant 错误码
      *
      */

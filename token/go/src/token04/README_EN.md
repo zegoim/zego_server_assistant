@@ -20,7 +20,7 @@ var payload string = <Your payload data> //custom data
 var appId uint32 = 123
 userId := "demo"
 secret := "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-var payload string = "payload"
+var payload string = ""
 
 token, err := zsa.GenerateToken04(appId, userId, secret, effectiveTimeInSeconds, payload)
 if err != nil {

@@ -31,7 +31,7 @@ if err != nil {
 fmt.Println(token)
 ```
 
-## 强验证token 生成demo
+## RTC房间权限认证token 生成demo
 - 强验证token用于对房间登录/推拉流权限需要进行强验证的场景，payload字段需要按照规格生成
 
 ```go

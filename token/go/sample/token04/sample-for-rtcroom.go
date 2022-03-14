@@ -7,7 +7,7 @@ import (
 )
 
 /*
-RTC房间强验证token生成示例代码
+RTC房间权限认证token生成示例代码
  */
 
 

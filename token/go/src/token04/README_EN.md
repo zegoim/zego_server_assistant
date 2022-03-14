@@ -13,7 +13,7 @@ var payload string = <Your payload data> //custom data
 ```
 
 
-## general token generate demo 
+## General Token generate demo 
 - The general token is used for simple authorization of service interfaces, and the payload field can be empty.
 
 ```go
@@ -30,7 +30,7 @@ if err != nil {
 fmt.Println(token)
 ```
 
-## strict token generate demo
+## RTC-Room Authorization Token generate demo
 - The strict token is used in scenarios where strong authentication is required for login-room/push-stream/pull-stream permissions. The payload field should be generated according to the specifications.
 
 ```go

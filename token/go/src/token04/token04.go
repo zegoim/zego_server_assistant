@@ -12,6 +12,18 @@ import (
 	"github.com/zegoim/zego_server_assistant/token/go/src/util"
 )
 
+//权限位定义
+const (
+	PrivilegeKeyLogin   = 1 // 登录
+	PrivilegeKeyPublish = 2 // 推流
+)
+
+//权限开关定义
+const (
+	PrivilegeEnable     = 1 // 开启
+	PrivilegeDisable    = 0 // 关闭
+)
+
 type TokenInfo04 struct {
 	AppId   uint32 `json:"app_id"`
 	UserId  string `json:"user_id"`

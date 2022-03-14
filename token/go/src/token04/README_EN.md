@@ -13,7 +13,8 @@ var payload string = <Your payload data> //custom data
 ```
 
 
-## demo
+## general token generate demo 
+- The general token is used for simple authorization of service interfaces, and the payload field can be empty.
 
 ```go
 var appId uint32 = 123
@@ -29,6 +30,38 @@ if err != nil {
 fmt.Println(token)
 ```
 
+## strict token generate demo
+- The strict token is used in scenarios where strong authentication is required for login-room/push-stream/pull-stream permissions. The payload field should be generated according to the specifications.
+
+```go
+var appId uint32 = 123
+roomId := "demo"
+userId := "demo"
+serverSecret := "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+var effectiveTimeInSeconds int64 = 3600
+privilege := make(map[int]int)
+privilege[token04.PrivilegeKeyLogin] = token04.PrivilegeEnable
+privilege[token04.PrivilegeKeyPublish] = token04.PrivilegeDisable
+
+payloadData := &RtcRoomPayLoad{
+    RoomId:       roomId,
+    Privilege:    privilege,
+    StreamIdList: nil,
+}
+
+payload, err := json.Marshal(payloadData)
+    if err != nil {
+    fmt.Println(err)
+    return
+}
+
+token, err := token04.GenerateToken04(appId, userId, serverSecret, effectiveTimeInSeconds, string(payload))
+if err != nil {
+    fmt.Println(err)
+    return
+}
+fmt.Println(token)
+```
 
 ## Import the codes
 1. Go to [Github - zego_server_assistant](https://github.com/zegoim/zego_server_assistant) to download the latest codes.

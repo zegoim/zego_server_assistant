@@ -61,6 +61,7 @@ def generate_token04(app_id, user_id, secret, effective_time_in_seconds, payload
         user_id: 用户ID
         secret: 在鉴权 token 计算过程中 AES 加密需要的密钥,32字节的字符串
         effective_time_in_seconds token: 的有效时长，单位：秒
+        payload:有效载荷
 
     Returns:
         TokenInfo: 包含三个对象，token, error_code, error_message

@@ -7,7 +7,7 @@ list(REMOVE_ITEM mysubdirs macro)
 # add all subdirs
 FOREACH(subdir ${mysubdirs})
     project(${subdir})
-    #add_subdirectory(${PROJECT_NAME})
+    add_subdirectory(${PROJECT_NAME})
     set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER sample)
 
     if (WIN32)

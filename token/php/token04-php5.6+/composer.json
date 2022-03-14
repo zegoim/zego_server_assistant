@@ -1,0 +1,24 @@
+{
+    "name": "zego/server_assistant",
+    "type": "library",
+    "description": "Zego Server Assistant",
+    "keywords": ["zego","Server Assistant"],
+    "homepage": "https://www.zego.im",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Float Yuan",
+            "email": "445271763@qq.com",
+            "homepage": "https://www.zego.im",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ZEGO\\": "src/ZEGO"
+          }
+    }
+}

@@ -26,6 +26,7 @@ app_id:int  # App ID assigned by ZEGO, the unique identifier of user.
 user_id:str  # User ID
 secret:str   # The secret key for AES encryption when applying for token.
 effective_time_in_seconds:int  # The validity period of token, unit: second
+payload:
 
 # Return codes
 token:TokenInfo  # three members: token, error_code, error_message 

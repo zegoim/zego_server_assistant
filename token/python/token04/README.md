@@ -31,11 +31,27 @@ effective_time_in_seconds:int  # token 的有效时长，单位：秒
 token:TokenInfo  # 三个成员: token, error_code, error_message 
 ```
 
-## demo
+## 普通token 生成demo
+- 普通token用于服务接口的简单权限验证的场景，payload字段可传空
 
 ```python
 if __name__ == '__main__':
-    token_info = zego_server_assistant.generate_token04(2913569222, "demo", "b0d996aecc46ad51600ea853bb378c18", 3600)
+    token_info = zego_server_assistant.generate_token04(2913569222, "demo", "b0d996aecc46ad51600ea853bb378c18", 3600, "")
+    print([token_info.token, token_info.error_code, token_info.error_message])
+```
+
+## 强验证token 生成demo
+- 强验证token用于对房间登录/推拉流权限需要进行强验证的场景，payload字段需要按照规格生成
+
+```python
+if __name__ == '__main__':
+    payload = {
+        "room_id": "demo",
+        "privilege": {1 : 1, 2 : 1},
+        "stream_id_list": None
+    }
+    token_info = zego_server_assistant.generate_token04(app_id=1, user_id="demo", secret="fa94dd0f974cf2e293728a526b028271",
+                                                        effective_time_in_seconds=3600, payload=json.dumps(payload))
     print([token_info.token, token_info.error_code, token_info.error_message])
 ```
 

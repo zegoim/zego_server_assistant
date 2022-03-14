@@ -32,6 +32,7 @@ public enum ErrorCode
  * @param userId 用户 ID
  * @param secret 由即构提供的与 appId 对应的密钥，请妥善保管，切勿外泄
  * @param effectiveTimeInSeconds token 的有效时长，单位：秒
+ * @param payload Json 字符串，用于更高级别的权限控制，如有需要此功能可联系Zego技术支持
  * @return 返回 token 内容，在使用前，请检查 errorInfo 字段是否为 SUCCESS。实际 token 内容保存在 token 字段中
  */
 public static GenerateTokenResult GenerateToken04(uint appID, string userID, string secret, long effectiveTimeInSeconds)
@@ -44,7 +45,7 @@ public Form1()
 {
 		InitializeComponent();
 
-		ZegoServerAssistant.GenerateTokenResult result = ZegoServerAssistant.ServerAssistant.GenerateToken04(1, "111", "12345678900987654321123456789012", 3600);
+		ZegoServerAssistant.GenerateTokenResult result = ZegoServerAssistant.ServerAssistant.GenerateToken04(1, "111", "12345678900987654321123456789012", 3600, "");
 }
 ```
 

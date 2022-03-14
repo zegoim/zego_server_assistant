@@ -15,7 +15,7 @@
 	 java: 复制 \java\token04\src 中的源文件，加入到你的工程，调用generateToken04 接口即可 详情参照Token04Sample.java  
 	 
 	 注意：
-	     1、终端生成Token c++和Java 与服务端代码是通用的
+	     1、终端生成Token c++和Java 与服务端代码是通用的,直接复制文件到你的工程即可
 		 2、生成Token 库中有使用rapidjson库，用户也可用自己的json库代替
          3、payload 为04 Token版本新增参数(默认为空，或者不传递即可)为Json 字符串，用于更高级别的权限控制，如有需要此功能可联系Zego技术支持
 		    基本Json格式如下:    

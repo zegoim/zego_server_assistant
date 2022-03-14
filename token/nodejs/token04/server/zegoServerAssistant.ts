@@ -7,7 +7,15 @@ enum ErrorCode {
     secretInvalid = 5, // "secret must be a 32 byte string"
     effectiveTimeInSecondsInvalid = 6, // "effectiveTimeInSeconds invalid"
 }
+const enum KPrivilegeKey {
+    PrivilegeKeyLogin = 1,
+    PrivilegeKeyPublish = 2
+}
 
+const enum KPrivilegeVal {
+    PrivilegeEnable = 1,
+    PrivilegeDisable = 0
+}
 interface ErrorInfo {
     errorCode: ErrorCode; // 错误码来自 ErrorCode
     errorMessage: string; // 对错误码的详细描述
@@ -63,6 +71,7 @@ export function generateToken04(
     userId: string,
     secret: string,
     effectiveTimeInSeconds: number,
+    payload?: string
 ): string {
     if (!appId || typeof appId !== 'number') {
         throw {
@@ -99,7 +108,7 @@ export function generateToken04(
         nonce: makeNonce(),
         ctime: createTime,
         expire: createTime + effectiveTimeInSeconds,
-        payload: ''
+        payload: payload || ''
     };
 
     // 把token信息转成json

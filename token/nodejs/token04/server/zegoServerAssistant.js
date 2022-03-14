@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var crypto_1 = require("crypto");
 var ErrorCode;
 (function (ErrorCode) {
@@ -9,16 +9,13 @@ var ErrorCode;
     ErrorCode[ErrorCode["secretInvalid"] = 5] = "secretInvalid";
     ErrorCode[ErrorCode["effectiveTimeInSecondsInvalid"] = 6] = "effectiveTimeInSecondsInvalid";
 })(ErrorCode || (ErrorCode = {}));
-
-function RndNum(a,b){
-    return Math.ceil((a +(b - a))*Math.random());
+function RndNum(a, b) {
+    return Math.ceil((a + (b - a)) * Math.random());
 }
-
 // 生成 int32 范围的随机数
 function makeNonce() {
     return RndNum(-2147483648, 2147483647);
 }
-
 function makeRandomIv() {
     var str = '0123456789abcdefghijklmnopqrstuvwxyz';
     var result = [];
@@ -50,29 +47,29 @@ function aesEncrypt(plainText, key, iv) {
     var out = Buffer.concat([encrypted, final]);
     return Uint8Array.from(out).buffer;
 }
-function generateToken04(appId, userId, secret, effectiveTimeInSeconds) {
+function generateToken04(appId, userId, secret, effectiveTimeInSeconds, payload) {
     if (!appId || typeof appId !== 'number') {
         throw {
             errorCode: ErrorCode.appIDInvalid,
-            errorMessage: 'appID invalid',
+            errorMessage: 'appID invalid'
         };
     }
     if (!userId || typeof userId !== 'string') {
         throw {
             errorCode: ErrorCode.userIDInvalid,
-            errorMessage: 'userId invalid',
+            errorMessage: 'userId invalid'
         };
     }
     if (!secret || typeof secret !== 'string' || secret.length !== 32) {
         throw {
             errorCode: ErrorCode.secretInvalid,
-            errorMessage: 'secret must be a 32 byte string',
+            errorMessage: 'secret must be a 32 byte string'
         };
     }
     if (!effectiveTimeInSeconds || typeof effectiveTimeInSeconds !== 'number') {
         throw {
             errorCode: ErrorCode.effectiveTimeInSecondsInvalid,
-            errorMessage: 'effectiveTimeInSeconds invalid',
+            errorMessage: 'effectiveTimeInSeconds invalid'
         };
     }
     var createTime = Math.floor(new Date().getTime() / 1000);
@@ -82,11 +79,11 @@ function generateToken04(appId, userId, secret, effectiveTimeInSeconds) {
         nonce: makeNonce(),
         ctime: createTime,
         expire: createTime + effectiveTimeInSeconds,
-        payload: ''
+        payload: payload || ''
     };
     // 把token信息转成json
     var plaintText = JSON.stringify(tokenInfo);
-    console.log('plain text ', plaintText);
+    console.log('plain text: ', plaintText);
     // 随机生成的 16 字节串，用作 AES 加密向量，放在密文前一起做Base64编码生成最终 token
     var iv = makeRandomIv();
     console.log('iv', iv);

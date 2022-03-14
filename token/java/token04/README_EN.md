@@ -53,7 +53,7 @@ enum ErrorCode {
  * @param effectiveTimeInSeconds The validity period of token, unit: second
  * @return Returned token content. Before using the token, check whether the error field is SUCCESS. The actual token content is stored in the data field.
  */
-TokenInfo generateToken04(long appId, String userId, String secret, int effectiveTimeInSeconds)
+TokenInfo generateToken04(long appId, String userId, String secret, int effectiveTimeInSeconds, String payload)
 ```
 
 ## general demo(refer to the source directory sample/Token04Sample.java)

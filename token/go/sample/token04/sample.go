@@ -5,6 +5,10 @@ import (
 	"github.com/zegoim/zego_server_assistant/token/go/src/token04"
 )
 
+/*
+普通token生成示例代码
+*/
+
 func main() {
 	var appId uint32 = 1
 	userId := "demo"

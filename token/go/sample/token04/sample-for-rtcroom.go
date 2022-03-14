@@ -6,6 +6,11 @@ import (
 	"github.com/zegoim/zego_server_assistant/token/go/src/token04"
 )
 
+/*
+RTC房间强验证token生成示例代码
+ */
+
+
 //token业务扩展：RTC房间认证属性
 type RtcRoomPayLoad struct {
 	RoomId       string      `json:"room_id"`           //房间id；用于对接口的房间id进行强验证

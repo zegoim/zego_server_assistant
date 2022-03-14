@@ -18,7 +18,9 @@
 3. Excute `composer dump-autoload` or `composer dump-autoload -o`(for production) or `composer update` commands, to generate autoload files.
 
 **Usage**  
-in `/my_project/xxx.php` file
+####general token generate demo
+- in `/my_project/xxx.php` file
+- The general token is used for simple authorization of service interfaces, and the payload field can be empty.
 ```php
 require 'vendor/autoload.php';
 use ZEGO\ZegoServerAssistant;
@@ -27,9 +29,46 @@ use ZEGO\ZegoErrorCodes;
 $appId = 1;
 $userId = 'demo';
 $secret = 'fa94dd0f974cf2e293728a526b028271';
-$token = ZegoServerAssistant::generateToken04($appId,$userId,$secret,3600);
+$payload = '';
+$token = ZegoServerAssistant::generateToken04($appId,$userId,$secret,3600,$payload);
 if( $token->code == ZegoErrorCodes::success ){
   print_r($token->token);
+}
+```
+
+#### strict token generate demo
+- in `/my_project/xxx.php` file
+- The strict token is used in scenarios where strong authentication is required for login-room/push-stream/pull-stream permissions. The payload field should be generated according to the specifications.
+
+```php
+require 'vendor/autoload.php';
+use ZEGO\ZegoServerAssistant;
+use ZEGO\ZegoErrorCodes;
+
+const PrivilegeKeyLogin   = 1; 
+const PrivilegeKeyPublish = 2; 
+
+const PrivilegeEnable     = 1; 
+const PrivilegeDisable    = 0; 
+
+$appId = 1;
+$userId = 'demo';
+$roomId = "demo";
+$secret = 'fa94dd0f974cf2e293728a526b028271';
+$rtcRoomPayLoad = [
+    'RoomId' => $roomId, 
+    'Privilege' => [    
+        PrivilegeKeyLogin => PrivilegeEnable,
+        PrivilegeKeyPublish => PrivilegeDisable,
+    ],
+    'StreamIdList' => [] 
+];
+
+$payload = json_encode($rtcRoomPayLoad);
+
+$token = ZegoServerAssistant::generateToken04($appId, $userId, $secret, 3600, $payload);
+if( $token->code == ZegoErrorCodes::success ){
+ print_r($token);
 }
 ```
 
@@ -38,18 +77,57 @@ if( $token->code == ZegoErrorCodes::success ){
 1. copy the library files to some directory in the project's root directory, for example we use `/my_project/zego`,and the `/my_project/` directory is the root directory of the project.
 
 **Usage**  
-in `/my_project/xxx.php` file
+####general token generate demo
+- in `/my_project/xxx.php` file
+- The general token is used for simple authorization of service interfaces, and the payload field can be empty.
 ```php
-require_once 'zego/auto_loader.php';
+require 'vendor/autoload.php';
 use ZEGO\ZegoServerAssistant;
 use ZEGO\ZegoErrorCodes;
 
 $appId = 1;
 $userId = 'demo';
 $secret = 'fa94dd0f974cf2e293728a526b028271';
-$token = ZegoServerAssistant::generateToken04($appId,$userId,$secret,3600);
+$payload = '';
+$token = ZegoServerAssistant::generateToken04($appId,$userId,$secret,3600,$payload);
 if( $token->code == ZegoErrorCodes::success ){
   print_r($token->token);
+}
+```
+
+#### strict token generate demo
+- in `/my_project/xxx.php` file
+- The strict token is used in scenarios where strong authentication is required for login-room/push-stream/pull-stream permissions. The payload field should be generated according to the specifications.
+
+```php
+require 'vendor/autoload.php';
+use ZEGO\ZegoServerAssistant;
+use ZEGO\ZegoErrorCodes;
+
+const PrivilegeKeyLogin   = 1; 
+const PrivilegeKeyPublish = 2; 
+
+const PrivilegeEnable     = 1; 
+const PrivilegeDisable    = 0; 
+
+$appId = 1;
+$userId = 'demo';
+$roomId = "demo";
+$secret = 'fa94dd0f974cf2e293728a526b028271';
+$rtcRoomPayLoad = [
+    'RoomId' => $roomId, 
+    'Privilege' => [    
+        PrivilegeKeyLogin => PrivilegeEnable,
+        PrivilegeKeyPublish => PrivilegeDisable,
+    ],
+    'StreamIdList' => [] 
+];
+
+$payload = json_encode($rtcRoomPayLoad);
+
+$token = ZegoServerAssistant::generateToken04($appId, $userId, $secret, 3600, $payload);
+if( $token->code == ZegoErrorCodes::success ){
+ print_r($token);
 }
 ```
 
@@ -78,9 +156,10 @@ class ZegoErrorCodes{
      * @param string $userId User ID
      * @param string $secret The secret key corresponding to AppID assigned by ZEGO. Please keep it carefully.
      * @param integer $effectiveTimeInSeconds The validity period of token, unit: second
+     * @param string $payload Business extension field, JSON string
      * @return ZegoAssistantToken  Returned token content, the value is the ZEGO\ZegoAssistantToken object. Before using the token, check whether the code property of the object is  ZEGO\ZegoErrorCodes::success. The actual token content is stored in the token property.
      */
-    public static function generateToken04(int $appId, string $userId, string $secret, int $effectiveTimeInSeconds)
+    public static function generateToken04(int $appId, string $userId, string $secret, int $effectiveTimeInSeconds, string $payload)
 
 
 ```

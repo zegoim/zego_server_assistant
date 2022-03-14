@@ -26,9 +26,10 @@ class ZegoServerAssistant {
      * @param string $userId 用户 ID
      * @param string $secret 由即构提供的与 appId 对应的密钥，请妥善保管，切勿外泄
      * @param integer $effectiveTimeInSeconds token 的有效时长，单位：秒
+     * @param string $payload 业务扩展字段，json串
      * @return ZegoAssistantToken 返回 token 内容，在使用前，请检查 code 字段是否为 ZegoErrorCodes::success。实际 token 内容保存在 token 字段中
      */
-    public static function generateToken04(int $appId, string $userId, string $secret,int $effectiveTimeInSeconds){
+    public static function generateToken04(int $appId, string $userId, string $secret,int $effectiveTimeInSeconds, string $payload){
         $assistantToken = new ZegoAssistantToken();
 
         $assistantToken->code = ZegoErrorCodes::success;
@@ -79,7 +80,7 @@ class ZegoServerAssistant {
             'nonce'    => $nonce,
             'ctime'    => $timestamp,
             'expire'   => $timestamp + $effectiveTimeInSeconds,
-            'payload'  => ""
+            'payload'  => $payload
         ];
     
         $cipher = 'aes-128-cbc';

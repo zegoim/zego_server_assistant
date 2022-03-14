@@ -6,7 +6,8 @@ use ZEGO\ZegoErrorCodes;
 $appId = 1;
 $userId = 'demo';
 $secret = 'fa94dd0f974cf2e293728a526b028271';
-$token = ZegoServerAssistant::generateToken04($appId, $userId, $secret, 3600);
+$payload = '';
+$token = ZegoServerAssistant::generateToken04($appId, $userId, $secret, 3600, $payload);
 if( $token->code == ZegoErrorCodes::success ){
   #...
 }

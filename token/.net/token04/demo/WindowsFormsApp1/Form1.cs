@@ -32,7 +32,10 @@ namespace WindowsFormsApp1
             payload["privilege"] = privilege;
             string strPayload = JsonConvert.SerializeObject(payload);
 
-            ZegoServerAssistant.GenerateTokenResult result = ZegoServerAssistant.ServerAssistant.GenerateToken04(1, "999922222333333", "12345678900987654321123456789012", 3600, strPayload);
+            ZegoServerAssistant.GenerateTokenResult result = ZegoServerAssistant.ServerAssistant.GenerateToken04(1, "999922222333333", "12345678900987654321123456789012", 3600, "");
+
+
+            ZegoServerAssistant.GenerateTokenResult rtc_result = ZegoServerAssistant.ServerAssistant.GenerateToken04(1, "999922222333333", "12345678900987654321123456789012", 3600, strPayload);
         }
 
         private void Form1_Load(object sender, EventArgs e)

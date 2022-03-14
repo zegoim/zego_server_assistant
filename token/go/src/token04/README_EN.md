@@ -13,8 +13,8 @@ var payload string = <Your payload data> //custom data
 ```
 
 
-## General Token generate demo
-- The General Token is used for simple authorization of service interfaces, and the payload field can be empty.
+## Basic Authorization Token generate demo
+- The Basic Authorization Token is used for simple authorization of service interfaces, and the payload field can be empty.
 
 ```go
 var appId uint32 = 123
@@ -30,8 +30,8 @@ if err != nil {
 fmt.Println(token)
 ```
 
-## RTC-Room Authorization Token generate demo
-- The RTC-Room Authorization Token is used in scenarios where strong authentication is required for login-room/push-stream/pull-stream permissions. The payload field should be generated according to the specifications.
+## Privilege Authorization Token generate demo
+- The Privilege Authorization Token is used in scenarios where strong authentication is required for login-room/push-stream/pull-stream permissions. The payload field should be generated according to the specifications.
 
 ```go
 var appId uint32 = 123

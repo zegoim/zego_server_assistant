@@ -13,8 +13,8 @@ var payload string = <Your payload data> //token业务扩展
 ```
 
 
-## 普通token 生成demo
-- 普通token用于服务接口的简单权限验证的场景，payload字段可传空
+## 基础鉴权token 生成demo
+- 基础鉴权token用于服务接口的简单权限验证的场景，payload字段可传空
 
 ```go
 var appId uint32 = 123
@@ -31,8 +31,8 @@ if err != nil {
 fmt.Println(token)
 ```
 
-## RTC房间权限认证token 生成demo
-- 强验证token用于对房间登录/推拉流权限需要进行强验证的场景，payload字段需要按照规格生成
+## 权限认证token 生成demo
+- 权限认证token用于对房间登录/推拉流权限需要进行强验证的场景，payload字段需要按照规格生成
 
 ```go
 var appId uint32 = 123

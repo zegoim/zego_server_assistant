@@ -6,7 +6,7 @@ import (
 )
 
 /*
-普通token生成示例代码
+基础鉴权token生成示例代码
 */
 
 func main() {

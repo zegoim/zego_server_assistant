@@ -7,11 +7,11 @@ import (
 )
 
 /*
-RTC房间权限认证token生成示例代码
+权限认证token生成示例代码
  */
 
 
-//token业务扩展：RTC房间认证属性
+//token业务扩展：权限认证属性
 type RtcRoomPayLoad struct {
 	RoomId       string      `json:"room_id"`           //房间id；用于对接口的房间id进行强验证
 	Privilege    map[int]int `json:"privilege"`         //权限位开关列表；用于对接口的操作权限进行强验证

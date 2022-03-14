@@ -11,7 +11,7 @@
      * oc：复制 \oc\rapidjson \oc\token04 加入到你的工程项目，调用GenerateToken04接口即可，详情参照sample.mm, 更高级别权限控制参照sample-for-rtcroom.mm  
 	
 	 * c++: 复制 \token\c++\token04 中的源文件，和头文件加入到你的工程，调用GenerateToken04接口即可，详情参照main.cc 
-	 *  java: 复制 \java\token04\src 中的源文件，加入到你的工程，调用generateToken04 接口即可 详情参照Token04Sample.java  
+	 *  java: 复制 \java\token04\src 中的源文件，加入到你的工程，调用generateToken04 接口即可 详情参照Token04Sample.java ,更高级别权限控制参照Token04ForRtcRoomSample.java
 	 
 * 注意：
 	* 1、生成Token 库中有使用rapidjson库，用户也可用自己的json库代替

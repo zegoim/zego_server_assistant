@@ -1,4 +1,4 @@
-ntroduction
+Introduction
 
 # Instructions
 
@@ -31,11 +31,27 @@ effective_time_in_seconds:int  # The validity period of token, unit: second
 token:TokenInfo  # three members: token, error_code, error_message 
 ```
 
-## demo
+## general token generate demo 
+- The general token is used for simple authorization of service interfaces, and the payload field can be empty.
 
 ```python
 if __name__ == '__main__':
-    token_info = zego_server_assistant.generate_token04(2913569222, "demo", "b0d996aecc46ad51600ea853bb378c18", 3600)
+    token_info = zego_server_assistant.generate_token04(2913569222, "demo", "b0d996aecc46ad51600ea853bb378c18", 3600, "")
+    print([token_info.token, token_info.error_code, token_info.error_message])
+```
+
+## strict token generate demo
+- The strict token is used in scenarios where strong authentication is required for login-room/push-stream/pull-stream permissions. The payload field should be generated according to the specifications.
+
+```python
+if __name__ == '__main__':
+    payload = {
+        "room_id": "demo",
+        "privilege": {1 : 1, 2 : 1},
+        "stream_id_list": None
+    }
+    token_info = zego_server_assistant.generate_token04(app_id=1, user_id="demo", secret="fa94dd0f974cf2e293728a526b028271",
+                                                        effective_time_in_seconds=3600, payload=json.dumps(payload))
     print([token_info.token, token_info.error_code, token_info.error_message])
 ```
 

@@ -20,22 +20,19 @@ public class TokenServerAssistant {
      */
     static public boolean VERBOSE = false;
 
-    static public class Privileges {
-        /**
-         * 是否允许登录房间, 默认无权限
-         */
-        public boolean canLoginRoom;
+     /**
+     * 权限位定义
+     */
+    static final public Integer PrivilegeKeyLogin = 1; // 登录
 
-        /**
-         * 是否允许推流, 默认无权限
-         */
-        public boolean canPublishStream;
+    static final public Integer PrivilegeKeyPublish = 2; // 推流
 
-        public Privileges() {
-            canLoginRoom = false;
-            canPublishStream = false;
-        }
-    }
+    /**
+     * 权限开关定义
+     */
+    static final public int PrivilegeEnable = 1; // 开启
+
+    static final public int PrivilegeDisable = 0; // 关闭
 
     static public enum ErrorCode {
         /**

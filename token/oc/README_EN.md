@@ -22,7 +22,7 @@ typedef NS_ENUM(NSUInteger, ZegoErrorCode) {
 };
 ```
 
-## GenerateToken04 参数及返回值说明
+## GenerateToken04 parameters description and return codes
 
 ```c++
 // 参数
@@ -35,7 +35,7 @@ long long effectiveTimeInSeconds;  // The validity period of token, unit: second
 ZegoToken04Result result;  //  Struct contains two members:  token、 errorInfo; errorInfo includes errorCode, errorMessage
 ```
 
-## 普通token 生成demo
+## general token generate demo
 - The general token is used for simple authorization of service interfaces, and the payload field can be empty.
 
 ```c++
@@ -61,7 +61,7 @@ ZegoToken04Result result;  //  Struct contains two members:  token、 errorInfo;
 }
 ```
 
-## 强验证token 生成demo
+## strict token generate demo
 - The strict token is used in scenarios where strong authentication is required for login-room/push-stream/pull-stream permissions. The payload field should be generated according to the specifications.
 
 ```c++

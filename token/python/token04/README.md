@@ -26,6 +26,7 @@ app_id:int  # Zego派发的数字ID, 各个开发者的唯一标识
 user_id:str  # 用户 ID
 secret:str   # 在获取 token 时进行 AES 加密的密钥
 effective_time_in_seconds:int  # token 的有效时长，单位：秒
+有效载荷:有效载荷
 
 # 返回值
 token:TokenInfo  # 三个成员: token, error_code, error_message 

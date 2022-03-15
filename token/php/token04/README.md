@@ -55,12 +55,12 @@ $userId = 'demo';
 $roomId = "demo";
 $secret = 'fa94dd0f974cf2e293728a526b028271';
 $rtcRoomPayLoad = [
-    'RoomId' => $roomId, //房间id；用于对接口的房间id进行强验证
-    'Privilege' => [     //权限位开关列表；用于对接口的操作权限进行强验证
+    'room_id' => $roomId, //房间id；用于对接口的房间id进行强验证
+    'privilege' => [     //权限位开关列表；用于对接口的操作权限进行强验证
         PrivilegeKeyLogin => PrivilegeEnable,
         PrivilegeKeyPublish => PrivilegeDisable,
     ],
-    'StreamIdList' => [] //流列表；用于对接口的流id进行强验证；允许为空，如果为空，则不对流id验证
+    'stream_id_list' => [] //流列表；用于对接口的流id进行强验证；允许为空，如果为空，则不对流id验证
 ];
 
 $payload = json_encode($rtcRoomPayLoad);
@@ -115,12 +115,12 @@ $userId = 'demo';
 $roomId = "demo";
 $secret = 'fa94dd0f974cf2e293728a526b028271';
 $rtcRoomPayLoad = [
-    'RoomId' => $roomId, //房间id；用于对接口的房间id进行强验证
-    'Privilege' => [     //权限位开关列表；用于对接口的操作权限进行强验证
+    'room_id' => $roomId, //房间id；用于对接口的房间id进行强验证
+    'privilege' => [     //权限位开关列表；用于对接口的操作权限进行强验证
         PrivilegeKeyLogin => PrivilegeEnable,
         PrivilegeKeyPublish => PrivilegeDisable,
     ],
-    'StreamIdList' => [] //流列表；用于对接口的流id进行强验证；允许为空，如果为空，则不对流id验证
+    'stream_id_list' => [] //流列表；用于对接口的流id进行强验证；允许为空，如果为空，则不对流id验证
 ];
 
 $payload = json_encode($rtcRoomPayLoad);

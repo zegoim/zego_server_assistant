@@ -56,12 +56,12 @@ $userId = 'demo';
 $roomId = "demo";
 $secret = 'fa94dd0f974cf2e293728a526b028271';
 $rtcRoomPayLoad = [
-    'RoomId' => $roomId, 
-    'Privilege' => [    
+    'room_id' => $roomId, 
+    'privilege' => [    
         PrivilegeKeyLogin => PrivilegeEnable,
         PrivilegeKeyPublish => PrivilegeDisable,
     ],
-    'StreamIdList' => [] 
+    'stream_id_list' => [] 
 ];
 
 $payload = json_encode($rtcRoomPayLoad);
@@ -115,12 +115,12 @@ $userId = 'demo';
 $roomId = "demo";
 $secret = 'fa94dd0f974cf2e293728a526b028271';
 $rtcRoomPayLoad = [
-    'RoomId' => $roomId, 
-    'Privilege' => [    
+    'room_id' => $roomId, 
+    'privilege' => [    
         PrivilegeKeyLogin => PrivilegeEnable,
         PrivilegeKeyPublish => PrivilegeDisable,
     ],
-    'StreamIdList' => [] 
+    'stream_id_list' => [] 
 ];
 
 $payload = json_encode($rtcRoomPayLoad);

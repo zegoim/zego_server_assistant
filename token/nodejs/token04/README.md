@@ -70,10 +70,11 @@ const payloadObject = {
         2: 0    // publishStream: 1 pass , 0 not pass
     },
     stream_id_list: null
-}; // 
+}; 
 const payload = JSON.stringify(payloadObject);
 // Build token 
 const token =  generateToken04(appID, userId, secret, effectiveTimeInSeconds, payload);
+
 ```
 
 ## 源码引入方式使用说明

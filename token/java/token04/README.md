@@ -69,7 +69,8 @@ public static void main(String[] args) {
     System.out.println(token);
 }
 ```
-## 强验证token 生成demo(参见源码目录 sample/Token04ForRtcRoomSample.java)
+## 权限认证Token 生成demo(参见源码目录 sample/Token04ForRtcRoomSample.java)
+   权限认证 Token 指的是为了进一步提高安全性开放了房间 ID 和推流 ID 这两个权限位，可以验证登录房间的 ID 和推流 ID。
 ```Java
 public static void main(String[] args) {
     long appId = 1L;    // 由即构提供

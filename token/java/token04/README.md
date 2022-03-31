@@ -63,7 +63,7 @@ public static void main(String[] args) {
     String userId = "demo";    // 用户 ID，同一 appId 下全网唯一
     int effectiveTimeInSeconds = 300;   // 有效时间，单位：秒
 
-    String payload = "{\"payload\":\"payload\"}";
+    String payload = "{\"room_id\":\"demo\"}"; // 填入自定义的payload值，如room_id
     ZegoServerAssistant.VERBOSE = true;    // 正式运行时，最好置为 false
     TokenInfo token = ZegoServerAssistant.generateToken04(appId, roomId, userId, privilege, secretKey, effectiveTimeInSeconds, payload);
     System.out.println(token);

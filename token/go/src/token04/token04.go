@@ -14,8 +14,8 @@ import (
 
 //权限位定义
 const (
-	PrivilegeKeyLogin   = 1 // 登录
-	PrivilegeKeyPublish = 2 // 推流
+	PrivilegeKeyLogin   = 1 // 是否启用登录鉴权
+	PrivilegeKeyPublish = 2 // 是否启用推流鉴权
 )
 
 //权限开关定义

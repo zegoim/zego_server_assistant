@@ -16,8 +16,8 @@ import (
 )
 
 const (
-	PrivilegeKeyLogin   = 1 // 登录
-	PrivilegeKeyPublish = 2 // 推流
+	PrivilegeKeyLogin   = 1 // 是否启用登录鉴权
+	PrivilegeKeyPublish = 2 // 是否启用推流鉴权
 	PrivilegeEnable     = 1 // 开启
 	PrivilegeDisable    = 0 // 关闭
 )

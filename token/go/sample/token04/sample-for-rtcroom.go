@@ -19,15 +19,31 @@ type RtcRoomPayLoad struct {
 }
 
 func main() {
-	var appId uint32 = 1
-	roomId := "demo"
-	userId := "demo"
-	serverSecret := "fa94dd0f974cf2e293728a526b028271"
-	var effectiveTimeInSeconds int64 = 3600
-	privilege := make(map[int]int)
-	privilege[token04.PrivilegeKeyLogin] = token04.PrivilegeEnable
-	privilege[token04.PrivilegeKeyPublish] = token04.PrivilegeDisable
+	var appId uint32 = 1                                // Zego派发的数字ID, 各个开发者的唯一标识
+	roomId := "demo"                                    // 房间 ID
+	userId := "demo"                                    // 用户 ID
+	serverSecret := "fa94dd0f974cf2e293728a526b028271"  // 在获取 token 时进行 AES 加密的密钥
+	var effectiveTimeInSeconds int64 = 3600             // token 的有效时长，单位：秒
 
+	//请参考 github.com/zegoim/zego_server_assistant/token/go/src/token04/token04.go 定义
+	////权限位定义
+	//const (
+	//	PrivilegeKeyLogin   = 1 // 是否启用登录鉴权
+	//	PrivilegeKeyPublish = 2 // 是否启用推流鉴权
+	//)
+
+	////权限开关定义
+	//const (
+	//	PrivilegeEnable     = 1 // 开启
+	//	PrivilegeDisable    = 0 // 关闭
+	//)
+
+	//业务权限认证配置，可以配置多个权限位
+	privilege := make(map[int]int)
+	privilege[token04.PrivilegeKeyLogin] = token04.PrivilegeEnable //开启房间登录鉴权
+	privilege[token04.PrivilegeKeyPublish] = token04.PrivilegeDisable //关闭推流鉴权
+
+	//token业务扩展配置
 	payloadData := &RtcRoomPayLoad{
 		RoomId:       roomId,
 		Privilege:    privilege,
@@ -40,6 +56,7 @@ func main() {
 		return
 	}
 
+	//生成token
 	token, err := token04.GenerateToken04(appId, userId, serverSecret, effectiveTimeInSeconds, string(payload))
 	if err != nil {
 		fmt.Println(err)

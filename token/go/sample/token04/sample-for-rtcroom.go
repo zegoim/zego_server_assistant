@@ -27,20 +27,20 @@ func main() {
 	//请参考 github.com/zegoim/zego_server_assistant/token/go/src/token04/token04.go 定义
 	////权限位定义
 	//const (
-	//	PrivilegeKeyLogin   = 1 // 是否启用登录鉴权
-	//	PrivilegeKeyPublish = 2 // 是否启用推流鉴权
+	//	PrivilegeKeyLogin   = 1 // 是否启用登录权限位认证
+	//	PrivilegeKeyPublish = 2 // 是否启用推流权限位认证
 	//)
 
 	////权限开关定义
 	//const (
-	//	PrivilegeEnable     = 1 // 开启
-	//	PrivilegeDisable    = 0 // 关闭
+	//	PrivilegeEnable     = 1 // 开启；对权限位进行校验检查
+	//	PrivilegeDisable    = 0 // 关闭；不对权限位进行校验检查
 	//)
 
 	//业务权限认证配置，可以配置多个权限位
 	privilege := make(map[int]int)
-	privilege[token04.PrivilegeKeyLogin] = token04.PrivilegeEnable    //开启房间登录鉴权
-	privilege[token04.PrivilegeKeyPublish] = token04.PrivilegeDisable //关闭推流鉴权
+	privilege[token04.PrivilegeKeyLogin] = token04.PrivilegeEnable    //开启房间登录权限位认证
+	privilege[token04.PrivilegeKeyPublish] = token04.PrivilegeDisable //关闭推流权限位认证
 
 	//token业务扩展配置
 	payloadData := &RtcRoomPayLoad{

@@ -17,11 +17,16 @@
     // Do any additional setup after loading the view.
 }
 
+//
+//权限认证token生成示例代码，使用前需联系即构技术支持开通功能
+//
+
 - (IBAction)OnMakeToken:(id)sender
 {
     NSString * serverKey= @"your_server_key;
     NSString * userID= @"demo_id_name";
     long long appid= 1;
+    //token 过期时间，单位：秒
     long long expireTime = 36000;
     
 	
@@ -34,8 +39,8 @@
 	int loginRoomRole = 1;
 	int publishRole = 1;
     rapidjson::Value privilege(rapidjson::kObjectType);
-    privilege.AddMember("1",loginRoomRole,allocator);  // 生成的Token 包含登录房间权限
-    privilege.AddMember("2",publishRole,allocator);  // 生成的Token 包含推流权限
+    privilege.AddMember("1",loginRoomRole,allocator);  // 生成的Token 允许登录房间
+    privilege.AddMember("2",publishRole,allocator);  // 生成的Token 允许推流
     document.AddMember("privilege",privilege,allocator);
     
     rapidjson::Value streamList(rapidjson::kArrayType);

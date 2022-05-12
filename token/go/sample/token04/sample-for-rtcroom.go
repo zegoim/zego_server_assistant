@@ -7,7 +7,7 @@ import (
 )
 
 /*
-权限认证token生成示例代码
+权限认证token生成示例代码，使用前需联系即构技术支持开通功能
 */
 
 //token业务扩展：权限认证属性
@@ -18,29 +18,41 @@ type RtcRoomPayLoad struct {
 }
 
 func main() {
-	var appId uint32 = 1                               // Zego派发的数字ID, 各个开发者的唯一标识
-	roomId := "demo"                                   // 房间 ID
-	userId := "demo"                                   // 用户 ID
-	serverSecret := "fa94dd0f974cf2e293728a526b028271" // 在获取 token 时进行 AES 加密的密钥
-	var effectiveTimeInSeconds int64 = 3600            // token 的有效时长，单位：秒
+	// 请将 appId 修改为你的 appId，appid 为数字，从即构控制台获取
+	// 举例：1234567890
+	var appId uint32 = 1234567890
+
+	// 请修改为你的 serverSecret，serverSecret 为字符串，从即构控制台获取
+	// 举例： "fa94dd0f974cf2e293728a526b028271"
+	serverSecret := ""
+
+	// 请将 userId 修改为用户的 user_id                              
+	userId := "user1"
+
+	// 请将 roomId 修改为用户的 roomId
+	roomId := "room1"                                   
+	        
+	// token 的有效时长，单位：秒
+	var effectiveTimeInSeconds int64 = 3600
+	
 
 	//请参考 github.com/zegoim/zego_server_assistant/token/go/src/token04/token04.go 定义
 	////权限位定义
 	//const (
-	//	PrivilegeKeyLogin   = 1 // 是否启用登录权限位认证
-	//	PrivilegeKeyPublish = 2 // 是否启用推流权限位认证
+	//	PrivilegeKeyLogin   = 1 // 1 代表登录权限
+	//	PrivilegeKeyPublish = 2 // 2 代表推流权限
 	//)
 
 	////权限开关定义
 	//const (
-	//	PrivilegeEnable     = 1 // 开启；对权限位进行校验检查
-	//	PrivilegeDisable    = 0 // 关闭；不对权限位进行校验检查
+	//	PrivilegeEnable     = 1 // 允许相应业务权限
+	//	PrivilegeDisable    = 0 // 不允许相应业务权限
 	//)
 
 	//业务权限认证配置，可以配置多个权限位
 	privilege := make(map[int]int)
-	privilege[token04.PrivilegeKeyLogin] = token04.PrivilegeEnable    //开启房间登录权限位认证
-	privilege[token04.PrivilegeKeyPublish] = token04.PrivilegeDisable //关闭推流权限位认证
+	privilege[token04.PrivilegeKeyLogin] = token04.PrivilegeEnable    //允许房间登录
+	privilege[token04.PrivilegeKeyPublish] = token04.PrivilegeDisable //不允许推流
 
 	//token业务扩展配置
 	payloadData := &RtcRoomPayLoad{

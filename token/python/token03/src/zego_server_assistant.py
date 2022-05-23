@@ -27,7 +27,7 @@ class TokenInfo:
 
 
 def __make_nonce():
-    return random.getrandbits(64)
+    return random.getrandbits(63)
 
 
 def __make_random_iv():

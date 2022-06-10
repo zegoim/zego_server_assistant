@@ -5,7 +5,6 @@ if(WIN32)
 elseif(LINUX)
 endif()
 
-list(REMOVE_DUPLICATES LINK_LIBRARY)
 message(STATUS "* target_link_libraries ${LINK_LIBRARY}")
 
 set_property(TARGET ${PROJECT_NAME} PROPERTY LINK_INTERFACE_MULTIPLICITY 3)

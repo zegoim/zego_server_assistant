@@ -63,9 +63,9 @@ public static void main(String[] args) {
     String userId = "demo";    // 用户 ID，同一 appId 下全网唯一
     int effectiveTimeInSeconds = 300;   // 有效时间，单位：秒
 
-    String payload = "{\"room_id\":\"demo\"}"; // 填入自定义的payload值，如room_id
+    String payload = "{\"room_id\":\"demo\"}"; // 填入自定义的payload值，如room_id。 非必输，不传则赋值null。
     ZegoServerAssistant.VERBOSE = true;    // 正式运行时，最好置为 false
-    TokenInfo token = ZegoServerAssistant.generateToken04(appId, roomId, userId, privilege, secretKey, effectiveTimeInSeconds, payload);
+    TokenInfo token = ZegoServerAssistant.generateToken04(appId, userId, secretKey, effectiveTimeInSeconds, payload);
     System.out.println(token);
 }
 ```
@@ -79,14 +79,14 @@ public static void main(String[] args) {
     int effectiveTimeInSeconds = 300;   // 有效时间，单位：秒
 
     JSONObject payloadData = new JSONObject();
-    payloadData.put("room_id", "demo"); // 房间id，限制用户只能登录特定房间
+    payloadData.put("room_id", "demo"); // 房间id，限制用户只能登录特定房间，必输。
     JSONObject privilege = new JSONObject();
     //是否允许登录房间 1 允许 0关闭
     privilege.put(TokenServerAssistant.PrivilegeKeyLogin, TokenServerAssistant.PrivilegeEnable);
     //是否允许推流    1 允许 0关闭
     privilege.put(TokenServerAssistant.PrivilegeKeyPublish, TokenServerAssistant.PrivilegeDisable);
-    payloadData.put("privilege", privilege);
-    payloadData.put("stream_id_list", null);
+    payloadData.put("privilege", privilege); // 必输，登录房间、推流两个权限位必须赋值其中一个或两个。
+    payloadData.put("stream_id_list", null); // 流列表，非必输
     String payload = payloadData.toJSONString();
 
     TokenServerAssistant.VERBOSE = false;    // 调试时，置为 true, 可在控制台输出更多信息；正式运行时，最好置为 false

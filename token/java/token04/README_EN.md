@@ -65,7 +65,7 @@ public static void main(String[] args) {
     String userId = "demo";    // User ID, must be unique within the App ID.
     int effectiveTimeInSeconds = 300;   //  The validity period, unit: second
 
-    String payload = "{\"payload\":\"payload\"}";
+    String payload = "{\"payload\":\"payload\"}"; // Not required,
     ZegoServerAssistant.VERBOSE = true;    // We recommend setting to false when running it
     TokenInfo token = ZegoServerAssistant.generateToken04(appId, roomId, userId, privilege, secretKey, effectiveTimeInSeconds, payload);
     System.out.println(token);
@@ -80,12 +80,12 @@ public static void main(String[] args) {
     int effectiveTimeInSeconds = 300;   //  The validity period, unit: second
 
     JSONObject payloadData = new JSONObject();
-    payloadData.put("room_id", "demo"); // room id
+    payloadData.put("room_id", "demo"); // room id, required
     JSONObject privilege = new JSONObject();
     privilege.put(TokenServerAssistant.PrivilegeKeyLogin, TokenServerAssistant.PrivilegeEnable);
     privilege.put(TokenServerAssistant.PrivilegeKeyPublish, TokenServerAssistant.PrivilegeDisable);
-    payloadData.put("privilege", privilege);
-    payloadData.put("stream_id_list", null);
+    payloadData.put("privilege", privilege); // required
+    payloadData.put("stream_id_list", null); // Not required
     String payload = payloadData.toJSONString();
     
     ZegoServerAssistant.VERBOSE = true;    // We recommend setting to false when running it

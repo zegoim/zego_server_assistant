@@ -67,7 +67,7 @@ public static void main(String[] args) {
 
     String payload = "{\"payload\":\"payload\"}"; // Not required,
     ZegoServerAssistant.VERBOSE = true;    // We recommend setting to false when running it
-    TokenInfo token = ZegoServerAssistant.generateToken04(appId, roomId, userId, privilege, secretKey, effectiveTimeInSeconds, payload);
+    TokenInfo token = ZegoServerAssistant.generateToken04(appId, userId, secretKey, effectiveTimeInSeconds, payload);
     System.out.println(token);
 }
 ```
@@ -89,7 +89,7 @@ public static void main(String[] args) {
     String payload = payloadData.toJSONString();
     
     ZegoServerAssistant.VERBOSE = true;    // We recommend setting to false when running it
-    TokenInfo token = ZegoServerAssistant.generateToken04(appId, roomId, userId, privilege, secretKey, effectiveTimeInSeconds, payload);
+    TokenInfo token = ZegoServerAssistant.generateToken04(appId, userId, secretKey, effectiveTimeInSeconds, payload);
     System.out.println(token);
 }
 ```

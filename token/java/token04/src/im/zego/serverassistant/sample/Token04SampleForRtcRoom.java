@@ -15,7 +15,7 @@ import java.util.Base64;
 // 权限认证 token 生成示例，使用前需联系即构技术支持开通功能
 //
 
-public class Token04ForRtcRoomSample {
+public class Token04SampleForRtcRoom {
     public static void main(String[] args) {
         long appId = 1222222222L;    // 请替换为你的 appId，从即构控制台获取
         String serverSecret = "12345678900987654321123456789012";  // 请替换为你的 serverSecret，从即构控制台获取，
@@ -23,7 +23,7 @@ public class Token04ForRtcRoomSample {
         int effectiveTimeInSeconds = 300;   // 有效时间，单位：秒
 
         JSONObject payloadData = new JSONObject();
-        payloadData.put("room_id", "demo"); // 房间id，限制用户只能登录特定房间
+        payloadData.put("room_id", "demo"); // 房间id，限制用户只能登录特定房间，必输。
         JSONObject privilege = new JSONObject();
         //登录房间权限 TokenServerAssistant.PrivilegeEnable 代表允许，TokenServerAssistant.PrivilegeDisable 代表不允许
         //此处代表允许登录房间
@@ -32,8 +32,8 @@ public class Token04ForRtcRoomSample {
         //是否允许推流 TokenServerAssistant.PrivilegeEnable 代表允许，TokenServerAssistant.PrivilegeDisable 代表不允许
         //此处代表不允许推流
         privilege.put(TokenServerAssistant.PrivilegeKeyPublish, TokenServerAssistant.PrivilegeDisable);
-        payloadData.put("privilege", privilege);
-        payloadData.put("stream_id_list", null);
+        payloadData.put("privilege", privilege); // 必输，登录房间、推流两个权限位必须赋值其中一个或两个。
+        payloadData.put("stream_id_list", null); // 流列表，非必输
         String payload = payloadData.toJSONString();
 
         TokenServerAssistant.VERBOSE = false;    // 调试时，置为 true, 可在控制台输出更多信息；正式运行时，最好置为 false

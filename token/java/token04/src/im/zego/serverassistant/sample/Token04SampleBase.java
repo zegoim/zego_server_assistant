@@ -23,7 +23,7 @@ public class Token04Sample {
         String userId = "test_user";    // 请替换为用户的 userID，同一 appId 下全网唯一
         int effectiveTimeInSeconds = 300;   // 有效时间，单位：秒
         // // 基础鉴权 token，payload字段可传空
-        String payload = "{\"payload\":\"payload\"}";
+        String payload = "{\"payload\":\"payload\"}";  // 填入自定义的payload值，如示例payload字段。 非必输，不传则赋值null。
         TokenServerAssistant.VERBOSE = false;    // 调试时，置为 true, 可在控制台输出更多信息；正式运行时，最好置为 false
         TokenServerAssistant.TokenInfo token = TokenServerAssistant.generateToken04(appId,  userId, serverSecret, effectiveTimeInSeconds, payload);
         System.out.println(token);

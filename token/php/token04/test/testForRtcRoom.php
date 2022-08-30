@@ -24,10 +24,10 @@ $appId = 1234567890;
 // 举例：'fa94dd0f974cf2e293728a526b028271'
 $serverSecret = '';
 
-// 请将 userId 修改为用户的 userId
+// 请将 userId 修改为用户的 userId，userId为string
 $userId = 'user1';
 
-// 请将 roomId 修改为用户的 roomId
+// 请将 roomId 修改为用户的 roomId，roomId为string
 $roomId = "room1";
 
 $rtcRoomPayLoad = [

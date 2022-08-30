@@ -22,7 +22,7 @@ if __name__ == '__main__':
     # 举例："fa94dd0f974cf2e293728a526b028271"
     server_secret = 
 
-    # 请将 user_id 修改为用户的 user_id
+    # 请将 user_id 修改为用户的 user_id，user_id 为 string
     # 举例："user1"
     user_id = "user1"
 

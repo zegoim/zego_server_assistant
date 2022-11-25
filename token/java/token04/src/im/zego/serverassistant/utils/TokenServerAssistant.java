@@ -23,9 +23,9 @@ public class TokenServerAssistant {
     /**
      * 权限位定义
      */
-    static final public Integer PrivilegeKeyLogin = 1; // 登录
+    static final public String PrivilegeKeyLogin = "1"; // 登录
 
-    static final public Integer PrivilegeKeyPublish = 2; // 推流
+    static final public String PrivilegeKeyPublish = "2"; // 推流
 
     /**
      * 权限开关定义

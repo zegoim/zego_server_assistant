@@ -7,8 +7,8 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.security.SecureRandom;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class TokenServerAssistant {
     static final private String VERSION_FLAG = "04";
@@ -151,9 +151,12 @@ public class TokenServerAssistant {
 
         debugInfo("generate random IV ...");
         byte[] ivBytes = new byte[IV_LENGTH];
-        String iv = "cceutxv9vrhfnx0r";
-        ivBytes = iv.getBytes();
-        ThreadLocalRandom.current().nextBytes(ivBytes);
+        SecureRandom rnd = new SecureRandom();
+        rnd.nextBytes(ivBytes);
+//         String iv = "cceutxv9vrhfnx0r";
+//         ivBytes = iv.getBytes();
+//         ThreadLocalRandom.current().nextBytes(ivBytes);
+        
 
         JSONObject json = new JSONObject();
         json.put("app_id", appId);

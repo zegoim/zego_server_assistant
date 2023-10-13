@@ -1,8 +1,45 @@
-#### Installation&Usage
----
-##### Method 1 (recommended): Composer Autoload, use composer's PSR-4 autoloader
-**Installation**
-1. Copy the library files to some directory in the project's root directory, for example we use `/my_project/zego`,and the `/my_project/` directory is the root directory of the project.
+[toc]
+# 1. Installation
+## Method 1(recommend): from official repository of composer
+
+```bash
+$ composer require zegoim/server_assistant:0.0.1
+```
+
+## Method 2(recommend): by path type of composer repositories
+The project's files structure：
+```
+.
+├── composer.json
+├── composer.lock
+├── packages
+│   └── zego_server_assistant
+└── src
+```
+
+Add a repository of path type in repositories field in `composer.json`
+```json
+{
+//...
+    "repositories": [
+        {
+            "type": "path",
+            "url": "./packages/zego_server_assistant"
+        }
+    ]
+//...
+}
+
+```
+
+Run 
+```bash
+$ composer require zegoim/server_assistant:0.0.1
+```
+
+## Method 3 : Composer Autoload, use composer's PSR-4 autoloader
+
+1. Copy the library files into a directory in the root of your project, For example we copied files into `/my_project/zego`, And the directory `/my_project/` is the root directory of the project.
 2. `vim /my_project/composer.json` add `psr-4` autoload configuration
 ```json
 {
@@ -15,10 +52,20 @@
   ...
 }
 ```
-3. Excute `composer dump-autoload` or `composer dump-autoload -o`(for production) or `composer update` commands, to generate autoload files.
+3. Run `composer dump-autoload` or `composer dump-autoload -o`(for production) or `composer update` to generate autoload files.
 
-**Usage**  
-####general token generate demo
+
+## Method 4: Symfony Class Auto Loader, for the projects that is not using composer
+
+1. Copy the library files into a directory in the root of your project, For example we copied files into `/my_project/zego`, And the directory `/my_project/` is the root directory of the project.
+
+require auto loader before using the library
+```php
+require_once 'zego/auto_loader.php';
+```
+
+# 2. Usage  
+## general token generate demo
 - in `/my_project/xxx.php` file
 - The general token is used for simple authorization of service interfaces, and the payload field can be empty.
 ```php
@@ -36,7 +83,8 @@ if( $token->code == ZegoErrorCodes::success ){
 }
 ```
 
-#### strict token generate demo
+
+## strict token generate demo
 - in `/my_project/xxx.php` file
 - The strict token is used in scenarios where strong authentication is required for login-room/push-stream/pull-stream permissions. The payload field should be generated according to the specifications.
 
@@ -72,67 +120,7 @@ if( $token->code == ZegoErrorCodes::success ){
 }
 ```
 
-##### Method 2: Symfony Class Auto Loader, for the project with out using composer
-**Installation**
-1. copy the library files to some directory in the project's root directory, for example we use `/my_project/zego`,and the `/my_project/` directory is the root directory of the project.
-
-**Usage**  
-####general token generate demo
-- in `/my_project/xxx.php` file
-- The general token is used for simple authorization of service interfaces, and the payload field can be empty.
-```php
-require 'vendor/autoload.php';
-use ZEGO\ZegoServerAssistant;
-use ZEGO\ZegoErrorCodes;
-
-$appId = 1;
-$userId = 'demo';
-$secret = 'fa94dd0f974cf2e293728a526b028271';
-$payload = '';
-$token = ZegoServerAssistant::generateToken04($appId,$userId,$secret,3600,$payload);
-if( $token->code == ZegoErrorCodes::success ){
-  print_r($token->token);
-}
-```
-
-
-#### strict token generate demo
-- in `/my_project/xxx.php` file
-- The strict token is used in scenarios where strong authentication is required for login-room/push-stream/pull-stream permissions. The payload field should be generated according to the specifications.
-
-```php
-require 'vendor/autoload.php';
-use ZEGO\ZegoServerAssistant;
-use ZEGO\ZegoErrorCodes;
-
-const PrivilegeKeyLogin   = 1; 
-const PrivilegeKeyPublish = 2; 
-
-const PrivilegeEnable     = 1; 
-const PrivilegeDisable    = 0; 
-
-$appId = 1;
-$userId = 'demo';
-$roomId = "demo";
-$secret = 'fa94dd0f974cf2e293728a526b028271';
-$rtcRoomPayLoad = [
-    'room_id' => $roomId, 
-    'privilege' => [    
-        PrivilegeKeyLogin => PrivilegeEnable,
-        PrivilegeKeyPublish => PrivilegeDisable,
-    ],
-    'stream_id_list' => [] 
-];
-
-$payload = json_encode($rtcRoomPayLoad);
-
-$token = ZegoServerAssistant::generateToken04($appId, $userId, $secret, 3600, $payload);
-if( $token->code == ZegoErrorCodes::success ){
- print_r($token);
-}
-```
-
-## Error codes
+# 3. Error codes
 
 ```php
 namespace ZEGO;
@@ -147,7 +135,7 @@ class ZegoErrorCodes{
 ```
 
 
-## generateToken04 parameters description and return codes
+# 4. generateToken04 parameters description and return codes
 
 ```php
     /**
@@ -164,6 +152,7 @@ class ZegoErrorCodes{
 
 
 ```
+
 Returned value is `ZEGO\ZegoAssistantToken` object：
 ```php
 

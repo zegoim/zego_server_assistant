@@ -1,6 +1,7 @@
 {
-    "name": "zego/server_assistant",
+    "name": "zegoim/server_assistant",
     "type": "library",
+    "version":"0.0.1",
     "description": "Zego Server Assistant",
     "keywords": ["zego","Server Assistant"],
     "homepage": "https://www.zego.im",
@@ -8,7 +9,7 @@
     "authors": [
         {
             "name": "Float Yuan",
-            "email": "445271763@qq.com",
+            "email": "floatyuan@zego.im",
             "homepage": "https://www.zego.im",
             "role": "Developer"
         }

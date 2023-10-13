@@ -1,0 +1,57 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "dbf2b332a8dd354b64545a2bec61d642",
+    "packages": [
+        {
+            "name": "zegoim/server_assistant",
+            "version": "0.0.1",
+            "dist": {
+                "type": "path",
+                "url": "..",
+                "reference": "2d2ae9cebb63487ce4babf39772c78ce619c4482"
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ZEGO\\": "src/ZEGO"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Float Yuan",
+                    "email": "floatyuan@zego.im",
+                    "homepage": "https://www.zego.im",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Zego Server Assistant",
+            "homepage": "https://www.zego.im",
+            "keywords": [
+                "Server Assistant",
+                "zego"
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}

@@ -21,10 +21,10 @@ namespace WinFormsApp1
             payload["privilege"] = privilege;
             string strPayload = JsonConvert.SerializeObject(payload);
 
-            ZegoServerAssistant.GenerateTokenResult result = ZegoServerAssistant.ServerAssistant.GenerateToken04(911619106, "456", "bcdcd0f6e5fd1835487c706b11084a23", 3600, strPayload);
+            ZegoServerAssistant.GenerateTokenResult result = ZegoServerAssistant.ServerAssistant.GenerateToken04(123, "456", "", 3600, strPayload);
 
 
-            ZegoServerAssistant.GenerateTokenResult rtc_result = ZegoServerAssistant.ServerAssistant.GenerateToken04(911619106, "456", "bcdcd0f6e5fd1835487c706b11084a23", 3600, strPayload);
+            ZegoServerAssistant.GenerateTokenResult rtc_result = ZegoServerAssistant.ServerAssistant.GenerateToken04(123, "456", "", 3600, strPayload);
         }
     }
 }

@@ -3,17 +3,23 @@ package im.zego.serverassistant.utils;
 import org.json.simple.JSONObject;
 
 import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 import java.util.Random;
 
 public class TokenServerAssistant {
     static final private String VERSION_FLAG = "04";
-    static final private int IV_LENGTH = 16;
-    static final private String TRANSFORMATION = "AES/CBC/PKCS5Padding";
+    static final private int NONCE_LENGTH = 12;
+    static final private String TRANSFORMATION = "AES/GCM/NoPadding";
 
     /**
      * 通过此变量控制在生成鉴权 token 过程中是否打印控制台信息
@@ -78,6 +84,21 @@ public class TokenServerAssistant {
         public String toString() {
             return "{\"code\": " + code.value + ", \"message\": \"" + message + "\"}";
         }
+    }
+
+    static public enum AesEncryptMode {
+        /**
+         * AES加密模式: AES/CBC/PKCS5Padding； 废弃
+         */
+        AesEncryptModeCBCPKCS5Padding(0),
+        /**
+         * AES加密模式: AES/GCM；推荐使用
+         */
+        AesEncryptModeGCM(1);
+
+        private AesEncryptMode(int mode) { this.value = mode; }
+
+        public int value;
     }
 
     /**
@@ -150,9 +171,9 @@ public class TokenServerAssistant {
         }
 
         debugInfo("generate random IV ...");
-        byte[] ivBytes = new byte[IV_LENGTH];
+        byte[] nonceBytes = new byte[NONCE_LENGTH];
         SecureRandom rnd = new SecureRandom();
-        rnd.nextBytes(ivBytes);
+        rnd.nextBytes(nonceBytes);
 //         String iv = "cceutxv9vrhfnx0r";
 //         ivBytes = iv.getBytes();
 //         ThreadLocalRandom.current().nextBytes(ivBytes);
@@ -174,13 +195,17 @@ public class TokenServerAssistant {
 
         try {
             debugInfo("encrypt content ...");
-            byte[] contentBytes = encrypt(content.getBytes("UTF-8"), secret.getBytes(), ivBytes);
 
-            ByteBuffer buffer = ByteBuffer.wrap(new byte[contentBytes.length + IV_LENGTH + 12]);
+            byte[] contentBytes = encrypt(content.getBytes("UTF-8"), secret, nonceBytes);
+
+            ByteBuffer buffer = ByteBuffer.wrap(new byte[contentBytes.length + NONCE_LENGTH + 13]);
             buffer.order(ByteOrder.BIG_ENDIAN);
             buffer.putLong(expire_time);     // 8 bytes
-            packBytes(ivBytes, buffer);      // IV_LENGTH + 2 bytes
+            packBytes(nonceBytes, buffer);      // IV_LENGTH + 2 bytes
             packBytes(contentBytes, buffer); // contentBytes.length + 2 bytes
+
+            byte mode = (byte)AesEncryptMode.AesEncryptModeGCM.ordinal();
+            buffer.put(mode);
 
             debugInfo("serialize with base64 ...");
             token.data = VERSION_FLAG + Base64.getEncoder().encodeToString(buffer.array());
@@ -195,26 +220,37 @@ public class TokenServerAssistant {
         return token;
     }
 
-    static private byte[] encrypt(byte[] content, byte[] secretKey, byte[] ivBytes)
+    static private byte[] encrypt(byte[] content, String secretKey, byte[] nonce)
             throws Exception {
-        if (secretKey == null || secretKey.length != 32) {
+        if (secretKey == null || secretKey.length() != 32) {
             throw new IllegalArgumentException("secret key's length must be 32 bytes");
         }
 
-        if (ivBytes == null || ivBytes.length != 16) {
-            throw new IllegalArgumentException("ivBytes's length must be 16 bytes");
+        if (nonce == null || nonce.length != 12) {
+            throw new IllegalArgumentException("nonce's length must be 12 bytes");
         }
 
         if (content == null) {
             content = new byte[] {};
         }
-        SecretKeySpec key = new SecretKeySpec(secretKey, "AES");
-        IvParameterSpec iv = new IvParameterSpec(ivBytes);
+
+        byte[] saltBytes = new byte[16];
+        SecureRandom rnd = new SecureRandom();
+        rnd.nextBytes(saltBytes);
+
+        SecretKey key = new SecretKeySpec(secretKey.getBytes("UTF-8"), "AES");
 
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
-        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+        cipher.init(Cipher.ENCRYPT_MODE, key, new GCMParameterSpec(16 * 8, nonce));
 
-        return cipher.doFinal(content);
+        byte[] encryptedMessageByte = cipher.doFinal(content);
+
+        byte[] cipherByte = ByteBuffer.allocate(saltBytes.length + encryptedMessageByte.length)
+                .put(encryptedMessageByte)
+                .put(saltBytes)
+                .array();
+
+        return encryptedMessageByte;
     }
 
     static private void packBytes(byte[] buffer, ByteBuffer target) {

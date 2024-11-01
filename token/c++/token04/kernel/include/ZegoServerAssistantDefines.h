@@ -56,6 +56,17 @@ namespace SERVER_ASSISTANT
     };
 
     /**
+     * @brief aes 加密模式
+     *
+     */
+    enum AesEncryptMode
+    {
+        AesEncryptModeCBCPKCS5Padding           = 0,    // AES加密模式: AES/CBC/PKCS5Padding； 废弃
+        AesEncryptModeGCM                       = 1     // AES加密模式: AES/GCM；推荐使用
+    };
+
+
+    /**
      * @brief 在调用 GenerateToken 方法时得到的返回值
      * token: 计算得到的 token
      * errorInfo: 错误信息, errorInfo.errorCode 为 0 时计算 token 成功

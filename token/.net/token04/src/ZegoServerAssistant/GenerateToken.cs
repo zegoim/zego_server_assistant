@@ -18,6 +18,12 @@ namespace ZegoServerAssistant
         effectiveTimeInSecondsInvalid = 6  // "effectiveTimeInSeconds invalid"
     };
 
+    public enum AesEncryptMode
+    {
+        AesEncryptModeCBCPKCS5Padding = 0, // AES加密模式: AES/CBC/PKCS5Padding； 废弃
+        AesEncryptModeGCM = 1 // AES加密模式: AES/GCM；推荐使用
+    }
+
     public class ErrorInfo
     {
         public ErrorCode errorCode;
@@ -74,21 +80,25 @@ namespace ZegoServerAssistant
 
                 string strPlaintText = JsonConvert.SerializeObject(thirdToken);
 
-                string strIv = MakeRandomString(16);
+                byte[] nonce = new byte[12]; // GCM 推荐的 nonce 大小
+                RandomNumberGenerator.Fill(nonce);
 
-                byte[] encrypt = AesEncrypt(strPlaintText, secret, strIv);
+                byte[] encrypt = AesGCMEncrypt(strPlaintText, secret, nonce);
 
                 if (encrypt == null) return null;
 
-                int resultSize = encrypt.Length + 28;
+                int resultSize = encrypt.Length + nonce.Length + 13;
                 byte[] resultBuffer = new byte[resultSize];
 
+                int start = 0;
                 //
-                PackInt64(ref resultBuffer, 0, (long)thirdToken["expire"]);
+                start = PackInt64(ref resultBuffer, start, (long)thirdToken["expire"]);
                 //
-                PackString(ref resultBuffer, 8, strIv);
+                start = PackByteArray(ref resultBuffer, start, nonce);
                 //
-                PackByteArray(ref resultBuffer, 26, encrypt);
+                start = PackByteArray(ref resultBuffer, start, encrypt);
+                //
+                start = PackInt8(ref resultBuffer, start, (byte)AesEncryptMode.AesEncryptModeGCM);
 
                 result.token = "04" + Convert.ToBase64String(resultBuffer, 0, resultSize);
             } while (false);
@@ -133,49 +143,67 @@ namespace ZegoServerAssistant
             return strRandom;
         }
 
-        private static Byte[] AesEncrypt(string str, string key, string iv)
+        private static Byte[] AesGCMEncrypt(string str, string key, byte[] nonce)
         {
-            if (string.IsNullOrEmpty(str)) return null;
-            Byte[] toEncryptArray = Encoding.UTF8.GetBytes(str);
-
-            RijndaelManaged rm = new RijndaelManaged
+            if (string.IsNullOrEmpty(str)) 
             {
-                Key = Encoding.UTF8.GetBytes(key),
-                IV = Encoding.UTF8.GetBytes(iv),
-                Mode = CipherMode.CBC,
-                Padding = PaddingMode.PKCS7
-            };
-            ICryptoTransform cTransform = rm.CreateEncryptor();
-            Byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
-            return resultArray;
+                return null;
+            }
+
+            byte[] toEncryptArray = Encoding.UTF8.GetBytes(str);
+            byte[] keyBytes = Encoding.UTF8.GetBytes(key);
+            byte[] cipherText = new byte[toEncryptArray.Length];
+            byte[] tag = new byte[16]; // GCM 标签大小为 16 字节
+
+            using (AesGcm aesGcm = new AesGcm(keyBytes))
+            {
+                aesGcm.Encrypt(nonce, toEncryptArray, cipherText, tag);
+            }
+
+            // 合并密文和标签
+            byte[] result = new byte[cipherText.Length + tag.Length];
+            Buffer.BlockCopy(cipherText, 0, result, 0, cipherText.Length);
+            Buffer.BlockCopy(tag, 0, result, cipherText.Length, tag.Length);
+            return result;
         }
 
-        private static void PackInt16(ref byte[] result, int start, short value)
+        private static int PackInt8(ref byte[] result, int start, byte value)
+        {
+            result[start] = value;
+            return start + 1;
+        }
+
+
+        private static int PackInt16(ref byte[] result, int start, short value)
         {
             byte[] data = BitConverter.GetBytes(value);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(data);
             Buffer.BlockCopy(data, 0, result, start, sizeof(short));
+            return start + sizeof(short);
         }
 
-        private static void PackInt64(ref byte[] result, int start, long value)
+        private static int PackInt64(ref byte[] result, int start, long value)
         {
             byte[] data = BitConverter.GetBytes(value);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(data);
             Buffer.BlockCopy(data, 0, result, start, sizeof(Int64));
+            return start + sizeof(Int64);
         }
 
-        private static void PackString(ref byte[] result, int start, string value)
+        private static int PackString(ref byte[] result, int start, string value)
         {
-            PackInt16(ref result, start, (short)value.Length);
-            Buffer.BlockCopy(System.Text.Encoding.Default.GetBytes(value), 0, result, start + sizeof(short), value.Length);
+            start = PackInt16(ref result, start, (short)value.Length);
+            Buffer.BlockCopy(System.Text.Encoding.Default.GetBytes(value), 0, result, start, value.Length);
+            return start + value.Length;
         }
 
-        private static void PackByteArray(ref byte[] result, int start, byte[] value)
+        private static int PackByteArray(ref byte[] result, int start, byte[] value)
         {
-            PackInt16(ref result, start, (short)value.Length);
-            Buffer.BlockCopy(value, 0, result, start + sizeof(short), value.Length);
+            start = PackInt16(ref result, start, (short)value.Length);
+            Buffer.BlockCopy(value, 0, result, start, value.Length);
+            return start + value.Length;
         }
     }
 }

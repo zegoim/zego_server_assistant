@@ -83,4 +83,4 @@ const token =  generateToken04(appID, userId, secret, effectiveTimeInSeconds, pa
 
 1. Go to [Github - zego_server_assistant](https://github.com/zegoim/zego_server_assistant) to download the latest codes.
 2. Copy the nodejs/token04/server directory to your project.
-3. Import the code `const { getToken } = require('../server/zegoServerAssistant');`
+3. Import the code `const { generateToken04 } = require('../server/zegoServerAssistant');`

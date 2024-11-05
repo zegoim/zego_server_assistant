@@ -81,4 +81,4 @@ const token =  generateToken04(appID, userId, secret, effectiveTimeInSeconds, pa
 
 1. 前往 [Github 代码托管地址](https://github.com/zegoim/zego_server_assistant) 下载最新代码。
 2. 将 nodejs/token04/server 目录 拷贝到 项目中
-3. 引入源码 `const { getToken } = require('../server/zegoServerAssistant');`
+3. 引入源码 `const { generateToken04 } = require('../server/zegoServerAssistant');`

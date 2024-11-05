@@ -22,35 +22,15 @@ class TokenInfo:
 
 
 def __make_nonce():
-    return random.getrandbits(31)
+    # 生成一个 12 字节的随机 nonce (IV)，返回字符串形式
+    str_chars = '0123456789abcdefghijklmnopqrstuvwxyz'
+    return ''.join(random.choice(str_chars) for _ in range(12))
 
-
-def __make_random_iv():
-    str = '0123456789abcdefghijklmnopqrstuvwxyz'
-    iv = ""
-    for i in range(16):
-        index = int(random.random() * 16)
-        iv += str[index]
-    return iv
-
-
-def __aes_pkcs5_padding(cipher_text, block_size):
-    padding_size = len(cipher_text) if (len(cipher_text) == len(
-        cipher_text.encode('utf-8'))) else len(cipher_text.encode('utf-8'))
-    padding = block_size - padding_size % block_size
-    if padding < 0:
-        return None
-    padding_text = chr(padding) * padding
-    return cipher_text + padding_text
-
-
-def __aes_encrypy(plain_text, key, iv):
-    cipher = AES.new(key.encode('utf-8'), AES.MODE_CBC, iv.encode('utf-8'))
-    content_padding = __aes_pkcs5_padding(plain_text, 16)
-    encrypt_bytes = cipher.encrypt(content_padding.encode('utf-8'))
-    return encrypt_bytes
-
-
+def __aes_gcm_with_tag_encrypy(plain_text, key, iv):
+    cipher = AES.new(key.encode('utf-8'), AES.MODE_GCM, nonce=iv.encode('utf-8'))
+    ciphertext, tag = cipher.encrypt_and_digest(plain_text.encode('utf-8'))
+    return ciphertext, tag
+     
 def generate_token04(app_id, user_id, secret, effective_time_in_seconds, payload):
     '''基本描述
         获取 token 的方法
@@ -77,33 +57,46 @@ def generate_token04(app_id, user_id, secret, effective_time_in_seconds, payload
         return TokenInfo("", ERROR_CODE_EFFECTIVE_TIME_IN_SECONDS_INVALID, "effective_time_in_seconds invalid")
     create_time = int(time.time())
     expire_time = create_time + effective_time_in_seconds
-    nonce = __make_nonce()
+    #生成一个随机数
+    random_int = random.randint(1, 90000000)
 
-    _token = {"app_id": app_id, "user_id": user_id, "nonce": nonce,
+    _token = {"app_id": app_id, "user_id": user_id, "nonce": random_int,
               "ctime": create_time, "expire": expire_time, "payload": payload}
     plain_text = json.dumps(_token, separators=(',', ':'), ensure_ascii=False)
+    
+    #生成一个12字节的用于aes 加密的once
+    nonce = __make_nonce()
+    ciphertext, tag =  __aes_gcm_with_tag_encrypy(plain_text, secret, nonce)
 
-    iv = __make_random_iv()
+    #aes 的tag  需要接在buf 后面
+    encrypt_buf = bytearray(len(ciphertext) + len(tag))
+    encrypt_buf[0: 0 + len(ciphertext)] = ciphertext[:]
+    encrypt_buf[len(ciphertext):len(ciphertext)+ len(tag)] = tag[:]
 
-    encrypt_buf = __aes_encrypy(plain_text, secret, iv)
-
-    result_size = len(encrypt_buf) + 28
+    result_size = len(encrypt_buf) + 24  # 结果大小要加上加密数据的长度
     result = bytearray(result_size)
 
+    # 处理过期时间
     big_endian_expire_time = struct.pack("!q", expire_time)
     result[0: 0 + len(big_endian_expire_time)] = big_endian_expire_time[:]
 
-    big_endian_iv_size = struct.pack("!h", len(iv))
-    result[8: 8 + len(big_endian_iv_size)] = big_endian_iv_size[:]
+    # 处理 nonce 长度和内容
+    big_endian_once_size = struct.pack("!h", len(nonce))
+    result[8: 8 + len(big_endian_once_size)] = big_endian_once_size[:]
 
-    buffer = bytearray(iv.encode('utf-8'))
+    buffer = bytearray(nonce.encode('utf-8'))
     result[10: 10 + len(buffer)] = buffer[:]
 
+    # 处理加密数据
     big_endian_buf_size = struct.pack("!h", len(encrypt_buf))
-    result[26: 26 + len(big_endian_buf_size)] = big_endian_buf_size[:]
+    result[22: 22 + len(big_endian_buf_size)] = big_endian_buf_size[:]
+    result[24: 24 + len(encrypt_buf)] = encrypt_buf[:]
 
-    result[28: len(result)] = encrypt_buf[:]
+    # append mode token use gcm
+    AesEncryptModeGCM = 1
+    result.append(AesEncryptModeGCM)
 
+    # 将结果进行 Base64 编码
     token = "04" + binascii.b2a_base64(result, newline=False).decode()
 
     return TokenInfo(token, ERROR_CODE_SUCCESS, "success")

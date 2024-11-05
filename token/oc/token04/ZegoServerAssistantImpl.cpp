@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "ZegoCrypto.hpp"
+#include "gcm.h"
 #include "Base64.h"
 #include "ZegoServerAssistantImpl.h"
 #include "json_tools.hpp"
@@ -12,21 +12,23 @@ namespace ZEGO
 {
 namespace SERVER_ASSISTANT
 {
-    std::string ZegoServerAssistantImpl::GenerateToken04(uint32_t appID, const std::string& userID, const std::string& secret, int64_t effectiveTimeInSeconds, const std::string&  payloadJson)
+    std::string ZegoServerAssistantImpl::GenerateToken04(uint32_t appID, const std::string& userID, const std::string& secret, int64_t effectiveTimeInSeconds, const std::string& payload)
     {
         time_t createTime;
         time(&createTime);
         time_t      expireTime = createTime + effectiveTimeInSeconds;
-        int32_t    nonce      = MakeNonce();
-        TokenParams params(appID, userID, createTime, expireTime, nonce, payloadJson);
+        int32_t    nonce      = MakeIntNonce();
+        TokenParams params(appID, userID, createTime, expireTime, nonce, payload);
 
         std::string plainText = TokenToJson(params);
 
-        std::string iv = MakeRandomIv();
+        std::string strNonce = MakeStrNonce(12);
 
-        std::string encryptBuf = AesEncrypt(plainText, secret, iv);
+        std::string encryptBuf = AesGCMEncrypt(plainText, secret, strNonce);
 
-        int64_t     bufferSize = encryptBuf.size() + 28;
+        int64_t     bufferSize = encryptBuf.size() + strNonce.size() + 13;
+        int start = 0;
+
         std::string buffer;
         buffer.resize(bufferSize);
 
@@ -39,23 +41,29 @@ namespace SERVER_ASSISTANT
         ((int*) buffer.data())[0] = expire_time_prefix;
         ((int*) buffer.data())[1] = expire_time_suffix;
 
-        int16_t ivSize       = iv.size();
+        start += sizeof(int64_t);
+
+        int16_t ivSize       = strNonce.size();
         int8_t  ivSizePrefix = ivSize >> 8;
         int8_t  ivSizeSuffix = ivSize;
 
-        ((int8_t*) buffer.data())[8] = ivSizePrefix;
-        ((int8_t*) buffer.data())[9] = ivSizeSuffix;
+        ((int8_t*) buffer.data())[start++] = ivSizePrefix;
+        ((int8_t*) buffer.data())[start++] = ivSizeSuffix;
 
-        buffer.replace(10, 16, iv.c_str(), 16);
+        buffer.replace(start, strNonce.size(), strNonce.c_str(), strNonce.size());
+        start += strNonce.size();
 
         int16_t encryptBufSize       = encryptBuf.size();
         int8_t  encryptBufSizePrefix = encryptBufSize >> 8;
         int8_t  encryptBufSizeSuffix = encryptBufSize;
 
-        ((int8_t*) buffer.data())[26] = encryptBufSizePrefix;
-        ((int8_t*) buffer.data())[27] = encryptBufSizeSuffix;
+        ((int8_t*) buffer.data())[start++] = encryptBufSizePrefix;
+        ((int8_t*) buffer.data())[start++] = encryptBufSizeSuffix;
 
-        buffer.replace(28, encryptBuf.size(), encryptBuf.c_str(), encryptBuf.size());
+        buffer.replace(start, encryptBuf.size(), encryptBuf.c_str(), encryptBuf.size());
+        start += encryptBuf.size();
+
+        ((int8_t*)buffer.data())[start] = AesEncryptModeGCM;
 
         int   outLen1   = base64_enc_len(buffer.size());
         char* outbuffer = new char[outLen1 + 1];
@@ -67,19 +75,19 @@ namespace SERVER_ASSISTANT
         return result;
     }
 
-    int32_t ZegoServerAssistantImpl::MakeNonce()
+    int32_t ZegoServerAssistantImpl::MakeIntNonce()
     {
         srand(unsigned(time(0)));
         int32_t nonce = (int32_t) rand();
         return nonce;
     }
 
-    std::string ZegoServerAssistantImpl::MakeRandomIv()
+    std::string ZegoServerAssistantImpl::MakeStrNonce(int length)
     {
         std::string str = "0123456789abcdefghijklmnopqrstuvwxyz";
         std::string buffer;
         srand(unsigned(time(0)));
-        for (int i = 0; i < 16; ++i) {
+        for (int i = 0; i < length; ++i) {
             buffer += str[(rand() % (str.length()))];
         }
         return buffer;
@@ -101,17 +109,23 @@ namespace SERVER_ASSISTANT
         return result;
     }
 
-    std::string ZegoServerAssistantImpl::AesEncrypt(
-      const std::string& origData, const std::string& key, const std::string& iv)
+    std::string ZegoServerAssistantImpl::AesGCMEncrypt(
+      const std::string& origData, const std::string& key, const std::string& nonce)
     {
-        std::string inputOrigData(origData.c_str(), origData.size());
-        std::string inputKey(key.c_str(), key.size());
-        std::string inputIv(iv.c_str(), iv.size());
+        std::string result;
+        result.resize(origData.size() + 16);
 
-        ZEGO::AV::CZegoCrypto crypto;
+        aes_init_keygen_tables();
 
-        std::string encrypted = crypto.AESEnc(inputOrigData, inputKey, inputIv);
-        return encrypted;
+        gcm_context ctx;            // includes the AES context structure
+
+        gcm_setkey(&ctx, (const uchar*)key.c_str(), (const uint)key.size());
+
+        gcm_crypt_and_tag(&ctx, ENCRYPT, (const uchar*)nonce.c_str(), nonce.size(), NULL, 0,
+            (const uchar*)origData.c_str(), (uchar*)result.c_str(), origData.size(), (uchar*)result.c_str() + origData.size(), 16);
+
+        gcm_zero_ctx(&ctx);
+        return result;
     }
 
 }  // namespace SERVER_ASSISTANT

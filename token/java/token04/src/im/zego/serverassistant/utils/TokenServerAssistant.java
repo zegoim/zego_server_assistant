@@ -234,23 +234,12 @@ public class TokenServerAssistant {
             content = new byte[] {};
         }
 
-        byte[] saltBytes = new byte[16];
-        SecureRandom rnd = new SecureRandom();
-        rnd.nextBytes(saltBytes);
-
         SecretKey key = new SecretKeySpec(secretKey.getBytes("UTF-8"), "AES");
 
         Cipher cipher = Cipher.getInstance(TRANSFORMATION);
         cipher.init(Cipher.ENCRYPT_MODE, key, new GCMParameterSpec(16 * 8, nonce));
 
-        byte[] encryptedMessageByte = cipher.doFinal(content);
-
-        byte[] cipherByte = ByteBuffer.allocate(saltBytes.length + encryptedMessageByte.length)
-                .put(encryptedMessageByte)
-                .put(saltBytes)
-                .array();
-
-        return encryptedMessageByte;
+        return  cipher.doFinal(content);
     }
 
     static private void packBytes(byte[] buffer, ByteBuffer target) {

@@ -1,15 +1,15 @@
 {
     "name": "zegoim/server_assistant",
     "type": "library",
-    "version":"0.0.1",
+    "version":"1.0.0",
     "description": "Zego Server Assistant",
     "keywords": ["zego","Server Assistant"],
     "homepage": "https://www.zego.im",
     "license": "MIT",
     "authors": [
         {
-            "name": "Float Yuan",
-            "email": "floatyuan@zego.im",
+            "name": "Klein Xu",
+            "email": "kleinxu@zego.im",
             "homepage": "https://www.zego.im",
             "role": "Developer"
         }

@@ -3,7 +3,7 @@
 ## Method 1(recommend): from official repository of composer
 
 ```bash
-$ composer require zegoim/server_assistant:0.0.1
+$ composer require zegoim/server_assistant:1.0.0
 ```
 
 ## Method 2(recommend): by path type of composer repositories
@@ -34,7 +34,7 @@ Add a repository of path type in repositories field in `composer.json`
 
 Run 
 ```bash
-$ composer require zegoim/server_assistant:0.0.1
+$ composer require zegoim/server_assistant:1.0.0
 ```
 
 ## Method 3 : Composer Autoload, use composer's PSR-4 autoloader

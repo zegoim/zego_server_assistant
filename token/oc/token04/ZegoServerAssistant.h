@@ -2,6 +2,7 @@
 #define __ZegoServerAssistant__
 
 #include <stdint.h>
+#include <map>
 #include <string>
 
 #include "ZegoServerAssistantDefines.h"
@@ -10,7 +11,7 @@ namespace ZEGO
 {
 namespace SERVER_ASSISTANT
 {
-    class  ZegoServerAssistant
+    class ZEGOSA_API ZegoServerAssistant
     {
     public:
         /**
@@ -22,7 +23,7 @@ namespace SERVER_ASSISTANT
          * @param effectiveTimeInSeconds token 的有效时长，单位：秒
          * @return ZegoTokenResult
          */
-        static ZegoToken04Result GenerateToken04(uint32_t appID, const std::string& userID, const std::string& secret, int64_t effectiveTimeInSeconds, std::string payloadJson ="");
+        static ZegoToken04Result GenerateToken04(uint32_t appID, const std::string& userID, const std::string& secret, int64_t effectiveTimeInSeconds, const std::string& payload);
     };
 }  // namespace SERVER_ASSISTANT
 

@@ -1,7 +1,7 @@
 [toc]
 # 1. 安装
 ## 方式一(推荐)：composer 官方源packagist安装
-执行`composer require zegoim/server_assistant:0.0.1`进行安装使用
+执行`composer require zegoim/server_assistant:1.0.0`进行安装使用
 
 ## 方式二(推荐)：composer repositories path类型安装
 将`token/php`目录下的
@@ -30,7 +30,7 @@ composer.json添加path类型的仓库
 
 ```
 
-执行`composer require zegoim/server_assistant:0.0.1`进行安装。
+执行`composer require zegoim/server_assistant:1.0.0`进行安装。
 
 ## 方式三：Composer Autoload，即使用composer的PSR-4自动加载机制实现加载
 
